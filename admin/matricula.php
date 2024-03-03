@@ -27,6 +27,8 @@ if (!isset($_SESSION['codigo_usuario'])) {
     <link href="../assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <link href="../dist/css/style.min.css" rel="stylesheet">
     <link href="css/formulario.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/libs/sweetAlerts2/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -75,6 +77,7 @@ INNER JOIN secciones ON secciones.codigo_seccion=nivel_seccion.codigo_seccion;")
                                             <th>Periodo</th>
                                             <th>Fecha Inicio</th>
                                             <th>Fecha Fin</th>
+                                            <th>Planilla Inscripcion</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -85,47 +88,45 @@ INNER JOIN secciones ON secciones.codigo_seccion=nivel_seccion.codigo_seccion;")
 
                                             ?>
                                             <tr>
-                                                <th>
+                                                <td>
                                                     <?php echo $r['codigo_inscripcion'] ?>
-                                                </th>
-                                                <th>
+                                                </td>
+                                                <td>
                                                     <?php echo $r['nombres_estudiante'] ?>
-                                                </th>
-                                                <th>
+                                                </td>
+                                                <td>
                                                     <?php echo $r['apellidos_estudiante'] ?>
-                                                </th>
+                                                </td>
 
-                                                <th>
+                                                <td>
                                                     <?php echo $nivelDescripcion ?>
-                                                </th>
+                                                </td>
 
-                                                <th>
+                                                <td>
                                                     <?php echo $r['seccion'] ?>
-                                                </th>
-                                                <th>
+                                                </td>
+                                                <td>
                                                     <?php echo $r['nombre'] ?>
-                                                </th>
-                                                <th>
+                                                </td>
+                                                <td>
                                                     <?php echo $r['fecha_inicio'] ?>
-                                                </th>
-                                                <th>
+                                                </td>
+                                                <td>
                                                     <?php echo $r['fecha_fin'] ?>
-                                                </th>
-                                                <th>
-                                                    <div class="constancia-btn">
-                                                        <?php echo "<a class='btn btn-success btn-sm' href='../php/generar_constancia.php?codigo_inscripcion=" . $r['codigo_inscripcion'] . "' target='_blank'><i class='fa fa-edit'></i>&nbsp; Generar Constancia de Inscripcion</a>"; ?>
-                                                    </div>
-                                                    <div class="constancia-btn">
-                                                        <?php echo "<a class='btn btn-primary btn-sm' href='../php/generar_constanciaestudio.php?codigo_inscripcion=" . $r['codigo_inscripcion'] . "&cedula_escolar=" . $r['cedula_escolar'] . "' target='_blank'><i class='fa fa-edit'></i>&nbsp; Generar Constancia de Estudio</a>"; ?>
-                                                    </div>
-                                                    <div class="constancia-btn">
-                                                        <?php
-                                                        if ($nivelDescripcion == 'Grupo C') {
-                                                            echo "<a class='btn btn-success btn-sm' href='../php/generar_constancia_graduacion.php?codigo_inscripcion=" . $r['codigo_inscripcion'] . "&cedula_escolar=" . $r['cedula_escolar'] . "' target='_blank'><i class='fa fa-graduation-cap'></i>&nbsp; Generar Constancia de Graduación</a>";
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </th>
+                                                </td>
+                                                <td style="text-align:center;">
+                                                    <?php echo "<a class='btn btn-outline-success btn-sm' style='border-radius:5px;' href='../php/generar_planillainscripcion.php?codigo_inscripcion=".$r['codigo_inscripcion']."'><i class='bi bi-file-earmark-person' style='font-size: 20px;text-align:center;'></i></a>"; ?>
+                                                </td>
+                                                <td  style="text-align:center;">
+                                                    <?php
+                                                        $data = array(
+                                                            'codigo_inscripcion' => $r['codigo_inscripcion'],
+                                                            'cedula_escolar' => $r['cedula_escolar'],
+                                                            'nivelDescripcion' => $nivelDescripcion
+                                                        );
+                                                        echo "<button class='btn btn-outline-success btn-sm' style='border-radius:5px;' onclick='openAlert(".(json_encode($data)).")'><i class='bi bi-file-earmark-pdf' style='font-size: 20px;text-align:center;'></i></button>";
+                                                    ?>
+                                                </td>
                                             </tr>
 
                                             <?php
@@ -140,6 +141,7 @@ INNER JOIN secciones ON secciones.codigo_seccion=nivel_seccion.codigo_seccion;")
                 </div>
             </div>
         </div>
+        <script src="../assets/libs/sweetAlerts2/sweetalert2.min.js"></script>
         <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
         <script src="..//libs/popper.js/dist/umd/popper.min.js"></script>
         <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -154,6 +156,7 @@ INNER JOIN secciones ON secciones.codigo_seccion=nivel_seccion.codigo_seccion;")
         <script>
             $('#zero_config').DataTable();
         </script>
+        <script src="./alertas.js"></script>
 </body>
 
 </html>

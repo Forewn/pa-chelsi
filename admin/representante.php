@@ -20,6 +20,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <title></title>
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
@@ -27,6 +28,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
     <link href="../assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <link href="../dist/css/style.min.css" rel="stylesheet">
     <link href="css/formulario.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/libs/sweetAlerts2/sweetalert2.css">
 </head>
 
 <body>
@@ -72,6 +74,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
                                             <th>Telefono</th>
                                             <th>Parentesco</th>
                                             <th>Foto del Representante</th>
+                                            <th>Representado</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -98,6 +101,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
                                                 <th><?php echo $r['telefono'] ?></th>
                                                 <th><?php echo $r['descripcion'] ?></th>
                                                 <th><button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#ver<?php echo $r['cedula_representante']; ?>">Ver Foto</button></th>
+                                                <th><button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#verr<?php echo $r['cedula_representante']; ?>" onclick="searchKids(<?php echo $r['cedula_representante']; ?>)">Ver Representado</button></th>
                                                 <th><span class="<?php echo $clase_estado; ?>"><?php echo $r['estado']; ?></span></th>
                                                 <th><?php echo "<a class='btn btn-success btn-sm'href='acciones/editar_representante.php?id=" . $r['cedula_representante'] . "'><i class='fa fa-edit'></i></a>"; ?>
                                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#elim<?php echo $r['cedula_representante']; ?>"><i class="fa fa-trash"></i></button>
@@ -132,6 +136,97 @@ if (!isset($_SESSION['codigo_usuario'])) {
         <script src="../assets/extra-libs/DataTables/datatables.min.js"></script>
         <script>
             $('#zero_config').DataTable();
+        </script>
+        <script src="../assets/libs/sweetAlerts2/sweetalert2.min.js"></script>
+        <script>
+            function searchKids(mamaID){
+                var request = new XMLHttpRequest();
+                request.open('GET', `./modales/ver_representado.php?cedular=${mamaID}`);
+                request.onload = function(){
+                    console.log(this.responseText);
+                    var respuesta = JSON.parse(this.responseText)
+                    formTable(respuesta);
+                }
+                request.send();
+            }
+
+            function openList(string){
+                swal({
+                    title: "Representados",
+                    type: 'info',
+                    html: `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Cedula escolar</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Apellidos</th>
+                            <th scope="col">Edad</th>
+                            <th scope="col">Grupo</th>
+                            <th scope="col">Sección</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider" id="table">
+                        ${string}
+                        </tbody>
+                    </table>
+                    `,
+                    width: "900px"
+                });
+            } 
+
+            async function formTable(results) {
+                let string = "";
+                let i = 1;
+                const promises = results.map(results => buscarInscripcion(results));
+                try {
+                    const inscripciones = await Promise.all(promises);
+                    for (const [index, inscripcion] of inscripciones.entries()) {
+                        if (inscripcion && inscripcion.grupo && inscripcion.seccion) {
+                            const table =document.getElementById('table');
+                            string += "<tr>";
+                            string += "<td>" + i + "</td>";
+                            string += "<td>" + results[index].cedula_escolar + "</td>";
+                            string += "<td>" + results[index].nombres + "</td>";
+                            string += "<td>" + results[index].apellidos + "</td>";
+                            string += "<td>" + results[index].edad + "</td>";
+                            string += "<td>" + inscripcion.grupo + "</td>";
+                            string += "<td>" + inscripcion.seccion + "</td>";
+                            string += "</tr>";
+                        } else {
+                            console.warn("La informacion de Inscripción esta incompleta:", results[index]);
+                        }
+                        i++;
+                    }
+                    openList(string);
+                } catch (error) {
+                    console.error("Error obteniendo inscripciones:", error);
+                }
+            }
+
+
+            function buscarInscripcion(hijo) {
+            return new Promise((resolve, reject) => {
+                let request = new XMLHttpRequest();
+                request.open('GET', `./buscarInscripciones.php?cedula=${hijo.cedula_escolar}`);
+                request.onload = function() {
+                if (this.status >= 200 && this.status < 300) {
+                    try {
+                    let datos = JSON.parse(this.responseText);
+                    resolve(datos);
+                    } catch (error) {
+                    reject(error); 
+                    }
+                } else {
+                    reject(new Error(`Peticion fallida con status: ${this.status}`));
+                }
+                };
+                request.onerror = reject;
+                request.send();
+                });
+            }
+
         </script>
 </body>
 

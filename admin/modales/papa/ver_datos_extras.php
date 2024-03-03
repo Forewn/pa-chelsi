@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h1 ALIGN="center">Direcciones y Telefonos</h1>
+                <h1 ALIGN="center">Informacion adicional</h1>
             </div>
             <div class="modal-body">
                 <form action="p" method="POST">
