@@ -36,6 +36,7 @@ if ($resultInscripcion->num_rows > 0) {
     $nombreEstudiante = ($datosInscripcion['nombres']);
     $apellidosEstudiante = ($datosInscripcion['apellidos']);
     $fechaNacimiento = date("d/m/Y", strtotime($datosInscripcion['fecha_nacimiento']));
+    $estado_nacimiento = $datosInscripcion['estado'];
     
     $lugarNacimiento = ($datosInscripcion['lugar_nacimiento']);
 } else {
@@ -69,9 +70,9 @@ $pdf->Cell(0, 10, utf8_decode('CONSTANCIA DE INSCRIPCIÓN'), 0, 1, 'C');
 $pdf->Ln(20);
 $pdf->SetFont('Arial', '', 12);
 
-$pdf->MultiCell(0, 10, utf8_decode('     Quien suscribe, Directora del C.E.I. Simoncito "Congreso de Angostura", Msc. NELLY MENDEZ titular de la cédula de identidad 10.154.625, hace constar por medio de la presente, que el(a) niño(a) ' . $nombreEstudiante . ' ' . $apellidosEstudiante . ' con cédula escolar ' . $cedulaEstudiante . ' nacido(a) en ' . $lugarNacimiento . ' el ' . $fechaNacimiento . ', está inscrito(a) para cursar el ' . $nivel . ' Sección "' . $seccion . '" durante el, Año Escolar ' . $periodo . '.'), 0, 'J');
+$pdf->MultiCell(0, 10, utf8_decode('     Quien suscribe, Directora del C.E.I. Simoncito "Congreso de Angostura", Msc. NELLY MENDEZ titular de la cédula de identidad 10.154.625, hace constar por medio de la presente, que el(a) niño(a) ' . strtoupper($nombreEstudiante . ' ' . $apellidosEstudiante) . ' con cédula escolar ' . $cedulaEstudiante . ' nacido(a) en ' . strtoupper($lugarNacimiento) . ', estado '. strtoupper($estado_nacimiento). ' el ' . $fechaNacimiento . ', está inscrito(a) para cursar el ' . $nivel . ' Sección "' . $seccion . '" durante el, Año Escolar ' . $periodo . '.'), 0, 'J');
 $pdf->Ln(10);
-$pdf->MultiCell(0, 10, utf8_decode('     Certificación que se expide en San Cristóbal, a los '. date('d'). ' día(s) del mes de '. mes(). ' del año '. date('Y'). '.'), 0, 'J');
+$pdf->MultiCell(0, 10, utf8_decode('     Certificación que se expide en el Estado Táchira, municipio San Cristóbal, a los '. date('d'). ' día(s) del mes de '. mes(). ' del año '. date('Y'). '.'), 0, 'J');
 $pdf->Ln(44);
 
 $pdf->SetFont('Arial', 'B', 12);
@@ -80,5 +81,6 @@ $pdf->Cell(0, 10, utf8_decode('Msc. NELLY MENDEZ DE TAYLOR'), 0, 1, 'C');
 $pdf->Cell(0, 10, utf8_decode('Directora'), 0, 1, 'C');
 
 // Mostrar el PDF
+include("footer.php");
 $pdf->Output();
 ?>

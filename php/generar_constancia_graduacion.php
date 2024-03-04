@@ -99,7 +99,7 @@ $pdfCertificacion->AddPage();
 
 $pdfCertificacion->SetFont('Arial', '', 12);
 $pdfCertificacion->Ln(10);
-$pdfCertificacion->MultiCell(0, 10, utf8_decode('     Quien suscribe ' . $nombreDirector . ' titular de la Cédula de Identidad Nº ' . $cedulaDirector . ' en su condición de Director(a) del ' . $ceiDirector . ', ubicado en el municipio San Cristóbal de la parroquia San Juan Bautista, adscrito a la Zona Educativa del estado Táchira, hace constar por medio de la presente que el niño(a) ' . $nombreEstudiante . ', portador de la Cédula Escolar Nº ' . $cedulaEscolar . ', nacido(a) en ' . $lugarNacimiento . ' Estado Táchira en fecha ' . $fechaNacimiento . ', cursa el ' . $nivelInscripcion . ' Sección "' . $seccionInscripcion . '" durante el período escolar ' . $periodoInscripcion . ' y continuará estudios en el 1er. Grado del Nivel de Educación Primaria, previo cumplimiento de los requisitos exigidos en la normativa legal vigente.'), 0, 'J');
+$pdfCertificacion->MultiCell(0, 10, utf8_decode('     Quien suscribe ' . $nombreDirector . ' titular de la Cédula de Identidad Nº ' . $cedulaDirector . ' en su condición de Director(a) del ' . strtoupper($ceiDirector) . ', ubicado en el municipio San Cristóbal de la parroquia San Juan Bautista, adscrito a la Zona Educativa del estado Táchira, hace constar por medio de la presente que el niño(a) ' . strtoupper($nombreEstudiante) . ', portador de la Cédula Escolar Nº ' . $cedulaEscolar . ', nacido(a) en ' . $lugarNacimiento . ' Estado Táchira en fecha ' . date("d/m/Y", strtotime($fechaNacimiento)) . ', cursa el ' . $nivelInscripcion . ' Sección "' . $seccionInscripcion . '" durante el período escolar ' . $periodoInscripcion . ' y continuará estudios en el 1er. Grado del Nivel de Educación Primaria, previo cumplimiento de los requisitos exigidos en la normativa legal vigente.'), 0, 'J');
 
 $pdfCertificacion->Ln(10);
 
@@ -120,6 +120,7 @@ $pdfCertificacion->Ln(5);
 $pdfCertificacion->Cell(5);
 $pdfCertificacion->Cell(90, 10, utf8_decode('PARA VALIDEZ A NIVEL NACIONAL'), 0, 0, 'C');
 $pdfCertificacion->Cell(90, 10, utf8_decode('VALIDEZ A NIVEL INTERNACIONAL'), 0, 0, 'C');
+$pdfCertificacion->Line(15, $pdfCertificacion->GetY()+10, 195, $pdfCertificacion->GetY()+10);
 $pdfCertificacion->Ln();
 
 // Filas de la tabla (puedes sustituir los textos de ejemplo)
@@ -127,14 +128,17 @@ $pdfCertificacion->Ln();
 $pdfCertificacion->Cell(5);
 $pdfCertificacion->Cell(90, 10, 'Director(a):', 0, 0, '');
 $pdfCertificacion->Cell(90, 10, 'Director(a):', 0, 0, '');
+$pdfCertificacion->Line(15, $pdfCertificacion->GetY()+10, 195, $pdfCertificacion->GetY()+10);
 $pdfCertificacion->Ln(9);
 $pdfCertificacion->Cell(5);
 $pdfCertificacion->Cell(90, 10, 'Nombre y Apellido: '.utf8_decode("$nombreDirector"), 0, 0, '');
 $pdfCertificacion->Cell(90, 10, 'Nombre y Apellido: ', 0, 0, '');
+$pdfCertificacion->Line(15, $pdfCertificacion->GetY()+10, 195, $pdfCertificacion->GetY()+10);
 $pdfCertificacion->Ln(9);
 $pdfCertificacion->Cell(5);
 $pdfCertificacion->Cell(90, 10,  utf8_decode('Cédula: ') . $cedulaDirector, 0, 0, '');
 $pdfCertificacion->Cell(90, 10, utf8_decode('Cédula: '), 0, 0, '');
+$pdfCertificacion->Line(15, $pdfCertificacion->GetY()+10, 195, $pdfCertificacion->GetY()+10);
 $pdfCertificacion->Ln(9);
 $pdfCertificacion->Cell(5);
 $pdfCertificacion->Cell(90, 10, 'Firma y sello', 0, 0, '');
