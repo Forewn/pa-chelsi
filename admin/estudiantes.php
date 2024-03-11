@@ -43,14 +43,12 @@ if (!isset($_SESSION['codigo_usuario'])) {
     p.apellidos as apellido_papa,
     ce.nombre as nombre_caso_emergencia,
     n.descripcion as nacionalidad
-
-FROM
-    estudiante e
-LEFT JOIN representante_legal rl ON e.cedula_representante = rl.cedula_representante
-LEFT JOIN mama m ON e.cedula_mama = m.cedula_mama
-LEFT JOIN papa p ON e.cedula_papa = p.cedula_papa
-LEFT JOIN caso_emergencia ce ON e.caso_emergencia = ce.codigo_emergencia
-LEFT JOIN nacionalidad n ON e.codigo_nacionalidad = n.codigo_nacionalidad";
+    FROM v_estudiantesactivos e
+    LEFT JOIN representante_legal rl ON e.cedula_representante = rl.cedula_representante
+    LEFT JOIN mama m ON e.cedula_mama = m.cedula_mama
+    LEFT JOIN papa p ON e.cedula_papa = p.cedula_papa
+    LEFT JOIN caso_emergencia ce ON e.caso_emergencia = ce.codigo_emergencia
+    LEFT JOIN nacionalidad n ON e.codigo_nacionalidad = n.codigo_nacionalidad";
     $mostrar = mysqli_query($conexion, $sentencia);
     ?>
     <div class="page-wrapper">

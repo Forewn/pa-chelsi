@@ -35,8 +35,11 @@ if (!isset($_SESSION['codigo_usuario'])) {
     <?php
     include 'includes/navbar.php';
     include '../php/conexion.php';
-    $sentencia = ("SELECT a.*, b.descripcion, e.estado FROM representante_legal a, parentesco b, estado e WHERE
-    b.codigo_parentesco=a.codigo_parentesco and e.codigo_estado=a.codigo_estado");
+    $sentencia = ("SELECT a.*, b.descripcion, e.estado 
+    FROM representante_legal a, parentesco b, estado e, v_estudiantesactivos f 
+    WHERE b.codigo_parentesco=a.codigo_parentesco
+    AND e.codigo_estado=a.codigo_estado
+    AND f.cedula_representante = a.cedula_representante");
     $mostrar = mysqli_query($conexion, $sentencia);
     ?>
     <div class="page-wrapper">

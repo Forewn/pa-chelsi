@@ -36,11 +36,11 @@ if (!isset($_SESSION['codigo_usuario'])) {
     include 'includes/navbar.php';
     include '../php/conexion.php';
     $sentencia = ("SELECT a.*, b.descripcion as estadoc, c.descripcion as nacionalidad, d.descripcion as nivela, e.estado
-    FROM papa a, estado_civil b, nacionalidad c, nivel_academico d, estado e
+    FROM papa a, estado_civil b, nacionalidad c, nivel_academico d, estado e, v_estudiantesactivos f
     WHERE a.codigo_estadocivil=b.codigo_estadocivil and
     a.codigo_nacionalidad=c.codigo_nacionalidad and
     a.codigo_nivelacademico=d.codigo_nivelacademico and
-    a.codigo_estado=e.codigo_estado");
+    a.codigo_estado=e.codigo_estado AND f.cedula_papa = a.cedula_papa");
     $mostrar = mysqli_query($conexion, $sentencia);
     ?>
     <div class="page-wrapper">

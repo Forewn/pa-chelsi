@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `antecedentes_parentales`
+-- Estructura de tabla para la tabla `antecedentes_paranatales`
 --
 
-CREATE TABLE `antecedentes_parentales` (
+CREATE TABLE `antecedentes_paranatales` (
   `codigo_antecedentes` int(3) NOT NULL,
   `enfermedad` varchar(50) NOT NULL,
   `hospitalizado` varchar(50) NOT NULL,
@@ -42,10 +42,10 @@ CREATE TABLE `antecedentes_parentales` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Volcado de datos para la tabla `antecedentes_parentales`
+-- Volcado de datos para la tabla `antecedentes_paranatales`
 --
 
-INSERT INTO `antecedentes_parentales` (`codigo_antecedentes`, `enfermedad`, `hospitalizado`, `alergias`, `condicion`, `informe`, `limitacion`, `especialista`, `doctor`, `enfermar_facilidad`, `cedula_escolar`) VALUES
+INSERT INTO `antecedentes_paranatales` (`codigo_antecedentes`, `enfermedad`, `hospitalizado`, `alergias`, `condicion`, `informe`, `limitacion`, `especialista`, `doctor`, `enfermar_facilidad`, `cedula_escolar`) VALUES
 (2, 'Ninguna', 'no', 'Ninguna', 'Ninguna', 'no', 'Ninguna', 'No ', 'Ninguno', 'no', '12010617729'),
 (3, 'ninguna', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', '12010617720'),
 (4, 'ninugna', 'no', 'no', 'no', 'si', 'no', 'no', 'no', 'si', '12010617728');
@@ -533,9 +533,9 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 
 --
--- Indices de la tabla `antecedentes_parentales`
+-- Indices de la tabla `antecedentes_paranatales`
 --
-ALTER TABLE `antecedentes_parentales`
+ALTER TABLE `antecedentes_paranatales`
   ADD PRIMARY KEY (`codigo_antecedentes`),
   ADD KEY `cedula_escolar` (`cedula_escolar`);
 
@@ -670,9 +670,9 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT de la tabla `antecedentes_parentales`
+-- AUTO_INCREMENT de la tabla `antecedentes_paranatales`
 --
-ALTER TABLE `antecedentes_parentales`
+ALTER TABLE `antecedentes_paranatales`
   MODIFY `codigo_antecedentes` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
@@ -704,10 +704,10 @@ ALTER TABLE `secciones`
 --
 
 --
--- Filtros para la tabla `antecedentes_parentales`
+-- Filtros para la tabla `antecedentes_paranatales`
 --
-ALTER TABLE `antecedentes_parentales`
-  ADD CONSTRAINT `antecedentes_parentales_ibfk_1` FOREIGN KEY (`cedula_escolar`) REFERENCES `estudiante` (`cedula_escolar`);
+ALTER TABLE `antecedentes_paranatales`
+  ADD CONSTRAINT `antecedentes_paranatales_ibfk_1` FOREIGN KEY (`cedula_escolar`) REFERENCES `estudiante` (`cedula_escolar`);
 
 --
 -- Filtros para la tabla `estudiante`

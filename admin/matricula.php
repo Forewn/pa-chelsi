@@ -37,12 +37,13 @@ if (!isset($_SESSION['codigo_usuario'])) {
     include '../php/conexion.php';
     $sentencia = ("SELECT inscripcion.*, estudiante.nombres AS nombres_estudiante, estudiante.apellidos AS apellidos_estudiante,
     periodo_academico.fecha_inicio, periodo_academico.fecha_fin, niveles.descripcion AS nivel_descripcion, periodo_academico.nombre, secciones.nombre as seccion 
-FROM inscripcion
-INNER JOIN estudiante ON inscripcion.cedula_escolar = estudiante.cedula_escolar
-INNER JOIN periodo_academico ON inscripcion.codigo_periodo = periodo_academico.codigo_periodo
-INNER JOIN nivel_seccion ON inscripcion.codigo_nivelseccion = nivel_seccion.codigo_nivelseccion
-INNER JOIN niveles ON niveles.codigo_niveles=nivel_seccion.codigo_niveles
-INNER JOIN secciones ON secciones.codigo_seccion=nivel_seccion.codigo_seccion;");
+    FROM inscripcion
+    INNER JOIN estudiante ON inscripcion.cedula_escolar = estudiante.cedula_escolar
+    INNER JOIN periodo_academico ON inscripcion.codigo_periodo = periodo_academico.codigo_periodo
+    INNER JOIN nivel_seccion ON inscripcion.codigo_nivelseccion = nivel_seccion.codigo_nivelseccion
+    INNER JOIN niveles ON niveles.codigo_niveles=nivel_seccion.codigo_niveles
+    INNER JOIN secciones ON secciones.codigo_seccion=nivel_seccion.codigo_seccion
+    WHERE periodo_academico.actual = 1;");
     $mostrar = mysqli_query($conexion, $sentencia);
     ?>
     <div class="page-wrapper">

@@ -76,21 +76,13 @@ class PDFCertificacion extends FPDF
     function Header()
     {   
         $this->Image('ministerio.png', 25, 0, 200);
-        $this->Image('escudo.png', 90,40, 20);
+        $this->Image('escudo.png', 100,40, 20);
         $this->Ln(60);
         $this->SetFont('Arial', 'B', 18);
         $this->Cell(0, 10, utf8_decode('CONSTANCIA DE PROSECUCIÓN '), 0, 1, 'C');
         $this->Cell(0, 10, utf8_decode('EN EL NIVEL DE EDUCACIÓN INICIAL'), 0, 1, 'C');
     }
 
-    
-
-    function Footer()
-    {
-        $this->SetY(-15);
-        $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, utf8_decode('Esta certificación tiene validez oficial y es emitida de acuerdo con los registros de este Instituto Educativo.'), 0, 0, 'C');
-    }
 }
 
 
@@ -99,12 +91,12 @@ $pdfCertificacion->AddPage();
 
 $pdfCertificacion->SetFont('Arial', '', 12);
 $pdfCertificacion->Ln(10);
-$pdfCertificacion->MultiCell(0, 10, utf8_decode('     Quien suscribe ' . $nombreDirector . ' titular de la Cédula de Identidad Nº ' . $cedulaDirector . ' en su condición de Director(a) del ' . strtoupper($ceiDirector) . ', ubicado en el municipio San Cristóbal de la parroquia San Juan Bautista, adscrito a la Zona Educativa del estado Táchira, hace constar por medio de la presente que el niño(a) ' . strtoupper($nombreEstudiante) . ', portador de la Cédula Escolar Nº ' . $cedulaEscolar . ', nacido(a) en ' . $lugarNacimiento . ' Estado Táchira en fecha ' . date("d/m/Y", strtotime($fechaNacimiento)) . ', cursa el ' . $nivelInscripcion . ' Sección "' . $seccionInscripcion . '" durante el período escolar ' . $periodoInscripcion . ' y continuará estudios en el 1er. Grado del Nivel de Educación Primaria, previo cumplimiento de los requisitos exigidos en la normativa legal vigente.'), 0, 'J');
+$pdfCertificacion->MultiCell(0, 10, utf8_decode('     Quien suscribe ' . $nombreDirector . ' titular de la Cédula de Identidad Nº ' . $cedulaDirector . ' en su condición de Director(a) del ' . strtoupper($ceiDirector) . ', ubicado en el municipio San Cristóbal de la parroquia San Juan Bautista, adscrito a la Zona Educativa del estado Táchira, hace constar por medio de la presente que el niño(a) ' . strtoupper($nombreEstudiante) . ', portador de la Cédula Escolar Nº ' . $cedulaEscolar . ', nacido(a) en ' . $lugarNacimiento . ' Estado Táchira en fecha ' . date("d/m/Y", strtotime($fechaNacimiento)) . ', cursó el ' . $nivelInscripcion . ' de la etap Preescolar de Educación Inicial durante el período escolar ' . $periodoInscripcion . ' y continuará estudios en el 1er. Grado del Nivel de Educación Primaria, previo cumplimiento de los requisitos exigidos en la normativa legal vigente.'), 0, 'J');
 
 $pdfCertificacion->Ln(10);
 
 
-$pdfCertificacion->MultiCell(0, 10, utf8_decode('     Certificación que se expide en San Cristóbal, a los '. date('d'). ' día(s) del mes de '. mes(). ' del año '. date('Y'). '.'), 0, 'J');
+$pdfCertificacion->MultiCell(0, 10, utf8_decode('     Constancia que se expide en San Cristóbal, a los '. date('d'). ' día(s) del mes de '. mes(). ' del año '. date('Y'). '.'), 0, 'J');
 
 $pdfCertificacion->Ln(9);
 

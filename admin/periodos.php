@@ -24,9 +24,12 @@ if (!isset($_SESSION['codigo_usuario'])) {
     <title></title>
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/extra-libs/multicheck/multicheck.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <link href="../dist/css/style.min.css" rel="stylesheet">
     <link href="css/formulario.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/periodo_actual.css">
+    <link rel="stylesheet" href="../assets/libs/sweetAlerts2/sweetalert2.css">
 </head>
 
 <body>
@@ -40,7 +43,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-12 d-flex no-block align-items-center">
-                    <h4 class="page-title">Periodos Acaemicos</h4>
+                    <h4 class="page-title">Periodos Académicos</h4>
                     <div class="ml-auto text-right">
                         <nav aria-label="breadcrumb">
                         </nav>
@@ -70,18 +73,21 @@ if (!isset($_SESSION['codigo_usuario'])) {
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="table">
                                         <?php
 
                                         while ($r = mysqli_fetch_array($mostrar)) {
 
                                         ?>
-                                            <tr>
+                                            <tr <?php echo $r['actual'] == 1 ? "id='periodo_actual'" : ""; ?>>
                                                 <th><?php echo $r['codigo_periodo'] ?></th>
                                                 <th><?php echo $r['nombre'] ?></th>
                                                 <th><?php echo $r['fecha_inicio'] ?></th>
                                                 <th><?php echo $r['fecha_fin'] ?></th>
-                                                <th><?php echo "<a class='btn btn-success btn-sm'href='acciones/editar_periodo.php?id=" . $r['codigo_periodo'] . "'><i class='fa fa-edit'></i></a>"; ?>
+                                                <th><?php echo "<a class='btn btn-success btn-sm'href='acciones/editar_periodo.php?id=" . $r['codigo_periodo'] . "'><i class='fa fa-edit'></i></a>";
+                                                echo "<a class='btn btn-success btn-sm' style='margin-left:5px;'"; 
+                                                echo ($r['actual'] == 0)? "onclick='set_periodo(" . $r['codigo_periodo'] . ")'": "";
+                                                echo "><i class='bi bi-bookmark-check-fill'></i></a>"; ?>
                                                 </th>
                                             </tr>
 
@@ -108,9 +114,11 @@ if (!isset($_SESSION['codigo_usuario'])) {
         <script src="../assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
         <script src="../assets/extra-libs/multicheck/jquery.multicheck.js"></script>
         <script src="../assets/extra-libs/DataTables/datatables.min.js"></script>
+        <script src="./js/periodo.js"></script>
         <script>
             $('#zero_config').DataTable();
         </script>
+        <script src="../assets/libs/sweetAlerts2/sweetalert2.min.js"></script>
 </body>
 
 </html>

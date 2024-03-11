@@ -1,7 +1,7 @@
 <?php
     require 'fpdf/fpdf.php';
     session_start();
-    if(!isset($_SESSION['id'])){
+    if(!isset($_SESSION['codigo_usuario'])){
         header("Location: ../admin/cerrarsesion.php");
     }
 
@@ -35,18 +35,18 @@
             $this->Image($imagen3, 170, 5, 35);
             $this->SetFont('Times', '', 10);
             $this->Ln(20);
-            $this->Cell(0, 5, utf8_decode('REPÚBLICA BOLIVARIANA DE VENEZUELA'), 0, 1, 'C');
-            $this->Cell(0, 5, utf8_decode('MINISTERIO DEL PODER POPULAR PARA LA EDUCACION'), 0, 1, 'C');
-            $this->Cell(0, 5, utf8_decode('C.E.I. SIMONCITO CONGRESO DE ANGOSTURA'), 0, 1, 'C');
-            $this->Cell(0, 5, utf8_decode('SAN CRISTÓBAL ESTADO TÁCHIRA'), 0, 1, 'C');
-            $this->Cell(0, 5, utf8_decode('CODIGO DE DEPENDENCIA 004102223'), 0, 1, 'C');
-            $this->Cell(0, 5, utf8_decode('CODIGO DEA OD01252023'), 0, 1, 'C');
-            $this->Ln(5);
+            $this->Cell(0, 4, utf8_decode('REPÚBLICA BOLIVARIANA DE VENEZUELA'), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode('MINISTERIO DEL PODER POPULAR PARA LA EDUCACION'), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode('C.E.I. SIMONCITO CONGRESO DE ANGOSTURA'), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode('SAN CRISTÓBAL ESTADO TÁCHIRA'), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode('CODIGO DE DEPENDENCIA 004102223'), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode('CODIGO DEA OD01252023'), 0, 1, 'C');
+            $this->Ln(4);
             $this->SetFont('Arial', 'B', '20');
-            $this->Cell(0, 5, utf8_decode("FICHA DE INSCRIPCIÓN"), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode("FICHA DE INSCRIPCIÓN"), 0, 1, 'C');
             $this->SetFontSize(15);
             $this->Ln(3);
-            $this->Cell(0, 5, utf8_decode("AÑO ESCOLAR 2023-2024"), 0, 1, 'C');
+            $this->Cell(0, 4, utf8_decode("AÑO ESCOLAR 2023-2024"), 0, 1, 'C');
             
         }
 
@@ -64,15 +64,15 @@
         function body($datos){
             
             //Datos ninos
-            $interlineado = 5;
+            $interlineado = 4;
             $apellidosN = $datos['apellidos_b'];
             $nombresN = $datos['nombres_b'];
             $fnaN = date("d/m/Y", strtotime($datos['fna_b']));
             $edadN = $datos['edad_b'];
             $lnaN = $datos['lna_b'];
             $estadoN = $datos['estado_b'];
-            $nacionalidadN = "por hacer";
-            $cedulaN = $datos['cedula_estudiante'];
+            $nacionalidadN = ($datos['nacionalidad_b'] == 'V')? "Venezolano": "Extranjero";
+            $cedulaN = $datos['nacionalidad_b'].$datos['cedula_estudiante'];
             $apellidosR = $datos['apellidos_r'];
             $nombresR = $datos['nombres_r'];
             $cedulaR = $datos['cedula_r'];
@@ -111,12 +111,18 @@
             $profesionP = $datos['profesion_pp'];
             $datosExtraP = "Por hacer";
             $enfermedad = "Asma";
-            $motivoHospitalizacion = "aqui va el texto";
-            $alergia = "NO tengo";
-            $condicion = "Aun por verse";
-            $esAtendido = "Si";
-            $doctor = "Cesar Augusto Salvatierra";
+            $hospitalizado = $datos['hospitalizado_AP'];
+            $motivoHospitalizacion = ($hospitalizado == 0)? "": $hospitalizado;
+            $alergia = 0;
+            $tipoalergia = "NO tengo";
+            $tieneCondicion = $datos['condicion_AP'];
+            $condicion = ($tieneCondicion == 0)? "" : $tieneCondicion;
+            $presentaInforme = $datos['informe_AP'];
+            $esAtendido = strtoupper($datos['especialista_AP']);
+            $limitacion = $datos['limitacion_AP'];
+            $doctor = $datos['doctor_AP'];
             $autorizado = "Aqui iran los datos que voy a poner aca, aun por definir";
+            $ef = $datos['enfermar_facilidad_AP'];
             $this->titulo('DATOS DEL NIÑO (A)');
             $this->Write(5, 'Apellidos: ');
             $this->resultado($apellidosN);
@@ -133,7 +139,7 @@
             $this->Write(5, "Edad: ");
             $this->resultado($edadN);
             $this->Line(18, $this->GetY()+4, 22, $this->GetY()+4);
-            $this->chart(80, 115);
+            $this->chart(68, 103);
             $this->SetX(22);
             $this->Write(5, "Lugar de nacimiento: ");
             $this->resultado($lnaN);
@@ -148,16 +154,16 @@
             $this->Line(149, $this->GetY()+4, 166, $this->GetY()+4);
             $this->Ln($interlineado);
             $this->Write(5, "Procedencia: Hogar");
-            $this->Line(33, $this->GetY()+4, 54, $this->GetY()+4);
-            $this->marcarX(((33+54)/2)-1, $this->GetY()+4);
-            $this->SetX(54);
+            $this->Line(33, $this->GetY()+4, 40, $this->GetY()+4);
+            $this->marcarX(((33+40)/2)-1, $this->GetY()+4);
+            $this->SetX(40);
             $this->Write(5, "Del mismo plantel");
-            $this->Line(75, $this->GetY()+4, 98, $this->GetY()+4);
-            $this->marcarX(((75+98)/2)-1, $this->GetY()+4);
-            $this->SetX(98);
+            $this->Line(61, $this->GetY()+4, 68, $this->GetY()+4);
+            $this->marcarX(((61+68)/2)-1, $this->GetY()+4);
+            $this->SetX(68);
             $this->Write(5, "Otro plantel");
-            $this->Line(112, $this->GetY()+4, 130, $this->GetY()+4);
-            $this->marcarX(((112+130)/2)-1, $this->GetY()+4);
+            $this->Line(82, $this->GetY()+4, 130, $this->GetY()+4);
+            $this->marcarX(((82+130)/2)-1, $this->GetY()+4);
             $this->SetX(130);
             $this->Write(5, utf8_decode("Cédula escolar:"));
             $this->resultado($cedulaN);
@@ -199,87 +205,92 @@
             $this->SetX(51);
             $this->Write(5, utf8_decode("Si: "));
             $this->Line(55, $this->GetY()+4, 61, $this->GetY()+4);
-            $this->marcarX(((55+61)/2)-1, $this->GetY()+4);
             $this->SetX(60);
             $this->Write(5, utf8_decode("No: "));
             $this->Line(65, $this->GetY()+4, 72, $this->GetY()+4);
-            $this->marcarX(((65+72)/2)-1, $this->GetY()+4);
+            ($hospitalizado != 0) ? $this->marcarX(((55+61)/2)-1, $this->GetY()+4) : $this->marcarX(((65+72)/2)-1, $this->GetY()+4);
             $this->SetX(71);
             $this->Write(5, utf8_decode("¿Por qué?: "));
             $this->Line(85, $this->GetY()+4, 200, $this->GetY()+4);
-            $this->resultado($motivoHospitalizacion);
+            ($hospitalizado != 0) ? $this->resultado($motivoHospitalizacion) : null;
             $this->Ln($interlineado);
-            $this->Write(5, "¿Presenta alguna alergia a Medicamento, Polvo, Compuesto Alimenticio? Si:");
+            $this->Write(5, utf8_decode("¿Presenta alguna alergia a Medicamento, Polvo, Compuesto Alimenticio? Si:"));
             $this->Line(97, $this->GetY()+4, 101, $this->GetY()+4);
-            $this->marcarX(((97+101)/2)-1, $this->GetY()+4);
             $this->SetX(100);
             $this->Write(5, "No:");
             $this->Line(105, $this->GetY()+4, 109, $this->GetY()+4);
-            $this->marcarX(((105+109)/2)-1, $this->GetY()+4);
+            ($alergia) ? $this->marcarX(((97+101)/2)-1, $this->GetY()+4) : $this->marcarX(((105+109)/2)-1, $this->GetY()+4);
             $this->SetX(109);
             $this->Write(5, utf8_decode("¿Cuál?: "));
             $this->Line(119, $this->GetY()+4, 200, $this->GetY()+4);
-            $this->resultado($alergia);
+            ($alergia) ? $this->resultado($tipoalergia) : null;
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode("¿Padece alguna Condición?"));
             $this->SetX(42);
             $this->Write(5, "Si:");
             $this->Line(46, $this->GetY()+4, 50, $this->GetY()+4);
-            $this->marcarX(((46+50)/2)-1, $this->GetY()+4);
             $this->SetX(50);
             $this->Write(5, "No:");
             $this->Line(54, $this->GetY()+4, 58, $this->GetY()+4);
-            $this->marcarX(((54+58)/2)-1, $this->GetY()+4);
+            ($tieneCondicion != 0)? $this->marcarX(((46+50)/2)-1, $this->GetY()+4) : $this->marcarX(((54+58)/2)-1, $this->GetY()+4);
             $this->SetX(58);
             $this->Write(5, utf8_decode("¿Cuál?: "));
             $this->Line(68, $this->GetY()+4, 200, $this->GetY()+4);
-            $this->resultado($condicion);
+            ($tieneCondicion != 0) ? $this->resultado($condicion) : null;
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode("¿Presentó Informe?"));
             $this->SetX(32);
             $this->Write(5, "Si:");
-            $this->Line(37, $this->GetY()+4, 43, $this->GetY()+4);
-            $this->marcarX(((37+43)/2)-1, $this->GetY()+4);
+            $this->Line(37, $this->GetY()+4, 42, $this->GetY()+4);
             $this->SetX(42);
-            $this->Write(5, "No:      ;");
-            $this->Line(47, $this->GetY()+4, 51, $this->GetY()+4);
-            $this->marcarX(((47+51)/2)-1, $this->GetY()+4);
+            $this->Write(5, "No:       ;");
+            $this->Line(47, $this->GetY()+4, 52, $this->GetY()+4);
+            ($presentaInforme != 0)? $this->marcarX(((37+42)/2)-1, $this->GetY()+4) : $this->marcarX(((47+52)/2)-1, $this->GetY()+4);
             $this->SetX(52);
             $this->Write(5, utf8_decode("¿Padece alguna limitación?"));
             $this->SetX(83);
             $this->Write(5, "Motora:");
             $this->Line(93, $this->GetY()+4, 97, $this->GetY()+4);
-            $this->marcarX(((93+97)/2)-1, $this->GetY()+4);
             $this->SetX(96);
             $this->Write(5, "de Crecimiento:");
             $this->Line(115, $this->GetY()+4, 119, $this->GetY()+4);
-            $this->marcarX(((115+119)/2)-1, $this->GetY()+4);
             $this->SetX(119);
             $this->Write(5, "Auditiva:");
             $this->Line(130, $this->GetY()+4, 134, $this->GetY()+4);
-            $this->marcarX(((130+134)/2)-1, $this->GetY()+4);
             $this->SetX(134);
             $this->Write(5, "Visual:       ;");
             $this->Line(143, $this->GetY()+4, 147, $this->GetY()+4);
-            $this->marcarX(((143+147)/2)-1, $this->GetY()+4);
             $this->SetX(148);
+            switch($limitacion){
+                case 1:
+                    $this->marcarX(((93+97)/2)-1, $this->GetY()+4);
+                    break;
+                case 2:
+                    $this->marcarX(((115+119)/2)-1, $this->GetY()+4);
+                    break;
+                case 3:
+                    $this->marcarX(((130+134)/2)-1, $this->GetY()+4);
+                    break;
+                case 4:
+                    $this->marcarX(((143+147)/2)-1, $this->GetY()+4);
+                    break;
+            };
             $this->Write(5, utf8_decode("¿Es Atendido (a) por Especialista?: "));
             $this->Line(189, $this->GetY()+4, 200, $this->GetY()+4);
-            $this->Write(5, $esAtendido);
+            $this->resultado(($esAtendido)? "SI":"NO");
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode(" Datos del Dr. "));
             $this->Line(27, $this->GetY()+4, 144, $this->GetY()+4);
-            $this->resultado($doctor);
+            ($esAtendido)? $this->resultado($doctor): null;
             $this->SetX(144);
             $this->Write(5, utf8_decode("Tiende a enfermarse con facilidad"));
             $this->SetX(182);
             $this->Write(5, "Si");
             $this->Line(186, $this->GetY()+4, 190, $this->GetY()+4);
-            $this->marcarX(((186+190)/2)-1, $this->GetY()+4);
             $this->SetX(190);
             $this->Write(5, "No");
             $this->Line(195, $this->GetY()+4, 199, $this->GetY()+4);
-            $this->marcarX(((195+199)/2)-1, $this->GetY()+4);
+            ($ef != 0)? $this->marcarX(((186+190)/2)-1, $this->GetY()+4) : $this->marcarX(((195+199)/2)-1, $this->GetY()+4);
             $this->Text(200, $this->GetY()+4, ".");
             $this->Ln($interlineado);
 
@@ -381,7 +392,7 @@
             $this->Ln($interlineado);
             $this->Ln($interlineado);
             $this->Ln($interlineado);
-            $this->Ln($interlineado);
+
 
             //PADRE
             //imagen padre
@@ -464,11 +475,10 @@
             $this->SetFont('Arial', '', 7);
         }
         function footer(){
-            $this->SetY(-45);
+            $this->SetY(-30);
             $this->SetX(100);
             $this->Write(5, "Directora (E)");
             $this->Line(90, $this->GetY(), 125, $this->GetY());
-            $this->Ln(10);
             $this->Ln(10);
             $this->SetX(60);
             $this->Write(5, "Docente");
@@ -477,10 +487,9 @@
             $this->Write(5, "Representante Legal");
             $this->Line(130, $this->GetY(), 165, $this->GetY());
             $this->Ln(10);
-            include "./meses.php";
-            $this->SetFont('Arial', '', 10);
+            $this->SetFont('Arial', '', 7);
             $this->SetY(-10);
-            $this->SetX(-50);
+            $this->SetX(-45);
             $this->Cell(0, 5, utf8_decode("Dia: ".date('d'). " Mes: ". date('m'). " Año: ". date('Y')));
         }
     }
@@ -489,7 +498,7 @@
     WHERE codigo_inscripcion = '$codigoInscripcion';";
     $result = mysqli_query($conexion, $sql);
     $valores = mysqli_fetch_assoc($result);
-    $pdf = new PDF('P', 'mm', 'Legal');
+    $pdf = new PDF('P', 'mm', 'Letter');
     $pdf->AddPage();
     $pdf->body($valores);
    

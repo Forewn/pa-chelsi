@@ -69,10 +69,10 @@ $pdf->SetFont('Arial', 'B', 18);
 $pdf->Cell(0, 10, utf8_decode('CONSTANCIA DE ESTUDIO'), 0, 1, 'C');
 $pdf->Ln(20);
 $pdf->SetFont('Arial', '', 12);
-$pdf->MultiCell(0, 10, utf8_decode('     Quien suscribe, Msc. Nelly Méndez de Taylor titular de la cédula de identidad 10.154.625, en su condición de Director(a) del CEI Simoncito Congreso de Angostura ubicado en el municipio San Cristóbal de la parroquia San Juan Bautista, adscrito a la zona Educativa del estado Táchira, hace constar por medio de la presente, que el(a) niño(a) ' . strtoupper($nombreEstudiante . ' ' . $apellidosEstudiante) . ' con cédula escolar ' . $cedulaEstudiante . ' nacido(a) en ' . strtoupper($lugarNacimiento) . ', estado '. strtoupper($estado_nacimiento). ' el ' . $fechaNacimiento . ', estudia en nuestra institución en el ' . $nivel . ' Sección "' . $seccion . '" en esté año escolar ' . $periodo . '.'), 0, 'J');
+$pdf->MultiCell(0, 10, utf8_decode('     Quien suscribe, Msc. Nelly Méndez de Taylor titular de la cédula de identidad 10.154.625, en su condición de Director(a) del CEI Simoncito Congreso de Angostura ubicado en el municipio San Cristóbal de la parroquia San Juan Bautista, hace constar por medio de la presente, que el(a) niño(a) ' . strtoupper($nombreEstudiante . ' ' . $apellidosEstudiante) . ' con cédula escolar Nº' . $cedulaEstudiante . ' nacido(a) en ' . strtoupper($lugarNacimiento) . ', estado '. strtoupper($estado_nacimiento). ' el ' . $fechaNacimiento . ', cursa estudios en esta institución en el ' . $nivel . ' Sección "' . $seccion . '" durante este año escolar ' . $periodo . '.'), 0, 'J');
 $pdf->Ln(10);
 
-$pdf->MultiCell(0, 10, utf8_decode('     Certificación que se expide en el Estado Táchira, municipio San Cristóbal, a los '. date('d'). ' día(s) del mes de '. mes(). ' del año '. date('Y'). '.'), 0, 'J');
+$pdf->MultiCell(0, 10, utf8_decode('     Certificación que se expide en San Cristóbal, a los '. date('d'). ' día(s) del mes de '. mes(). ' del año '. date('Y'). '.'), 0, 'J');
 
 $pdf->Ln(30);
 

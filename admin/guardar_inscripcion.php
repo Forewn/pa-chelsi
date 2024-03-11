@@ -2,6 +2,7 @@
 // Verifica si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera los datos del estudiante
+    echo "hola";
     $cedulaEstudiante = $_POST['cedulaEstudiante'];
     $apellidosEstudiante = $_POST['apellidosEstudiante'];
     $nombresEstudiante = $_POST['nombresEstudiante'];
@@ -20,8 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera los datos de antecedentes prenatales
     $enfermedad = $_POST['enfermedad'];
     $hospitalizado = $_POST['hospitalizado'];
-    $alergias = $_POST['alergias'];
-    $condicion = $_POST['condicion'];
+    // $hospitalizado = ($hospitalizado == 0)? $hospitalizado : htmlspecialchars($_POST['motivoHospitalizacion']);
+    $presentaAlergia = $_POST['presentaAlergia'];
+    // $presentaAlergia = ($presentaAlergia == 0)? $presentaAlergia: htmlspecialchars($_POST['alergias']);
+    $condicion = $_POST['pardeceCondicion']; 
+    // $condicion = ($condicion == 0)? $condicion: htmlspecialchars($_POST['condicion']);
     $informe = $_POST['informe'];
     $limitacion = $_POST['limitacion'];
     $especialista = $_POST['especialista'];
@@ -88,15 +92,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $codigoEstudiante = $rowEstudiante['cedula_escolar'];
 
         // Verificar si ya existen antecedentes parentales
-        $sqlAntecedentesExist = "SELECT * FROM antecedentes_parentales WHERE cedula_escolar = '$cedulaEstudiante'";
+        $sqlAntecedentesExist = "SELECT * FROM antecedentes_paranatales WHERE cedula_escolar = '$cedulaEstudiante'";
         $resultAntecedentesExist = $conexion->query($sqlAntecedentesExist);
 
         if ($resultAntecedentesExist->num_rows > 0) {
             // Ya existen antecedentes parentales, mostrar mensaje de éxito
             echo "Se ha inscrito exitosamente.";
         } else {
-            // Agregar antecedentes parentales
-            $sqlAntecedentes = "INSERT INTO antecedentes_parentales (enfermedad, hospitalizado, alergias, condicion, informe, limitacion, especialista, doctor, enfermar_facilidad, cedula_escolar) VALUES ('$enfermedad', '$hospitalizado', '$alergias', '$condicion', '$informe', '$limitacion', '$especialista', '$doctor', '$enfermarFacilidad', '$codigoEstudiante')";
+            // Agregar antecedentes parANAtales
+            $sqlAntecedentes = "INSERT INTO antecedentes_paranatales (enfermedad, hospitalizado, alergias, condicion, informe, limitacion, especialista, doctor, enfermar_facilidad, cedula_escolar) VALUES ('$enfermedad', '$hospitalizado', '$presentaAlergia', '$condicion', '$informe', '$limitacion', '$especialista', '$doctor', '$enfermarFacilidad', '$codigoEstudiante')";
             $resultAntecedentes = $conexion->query($sqlAntecedentes);
 
             if ($resultAntecedentes) {
@@ -184,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($resultEstudiante) {
             // Agregar antecedentes parentales
-            $sqlAntecedentes = "INSERT INTO antecedentes_parentales (enfermedad, hospitalizado, alergias, condicion, informe, limitacion, especialista, doctor, enfermar_facilidad, cedula_escolar) VALUES ('$enfermedad', '$hospitalizado', '$alergias', '$condicion', '$informe', '$limitacion', '$especialista', '$doctor', '$enfermarFacilidad', '$cedulaEstudiante')";
+            $sqlAntecedentes = "INSERT INTO antecedentes_paranatales (enfermedad, hospitalizado, alergias, condicion, informe, limitacion, especialista, doctor, enfermar_facilidad, cedula_escolar) VALUES ('$enfermedad', '$hospitalizado', '$alergias', '$condicion', '$informe', '$limitacion', '$especialista', '$doctor', '$enfermarFacilidad', '$cedulaEstudiante')";
             $resultAntecedentes = $conexion->query($sqlAntecedentes);
 
             if ($resultAntecedentes) {

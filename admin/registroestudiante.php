@@ -151,25 +151,25 @@ if (!isset($_SESSION['codigo_usuario'])) {
                     <h2>DATOS ESTUDIANTE</h2><br>
                     <form autocomplete="off" enctype="multipart/form-data">
                       <label>Cédula Escolar: <input type="text" id="cedula_escolar" name="cedula_escolar"
-                          pattern="\d{11}" title="Cédula escolar invalida, debe requerir 11 numeros." required></label>
+                          pattern="\d{11}" title="Cédula escolar invalida, debe requerir 11 numeros.></label>
                       <label>Apellidos: <input type="text" id="apellidos_estudiante" name="apellidos_estudiante"
-                          pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos." required
-                          minlength="5" maxlength="35"></label>
+                          pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos."
+                          minlength="5" maxlength="35" required></label>
                       <label>Nombres: <input type="text" id="nombres_estudiante" name="nombres_estudiante"
-                          pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos." required
-                          minlength="3" maxlength="35"></label>
+                          pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos."
+                          minlength="3" maxlength="35" required></label>
                       <label>Fecha de Nacimiento: <input type="date" id="fecha_estudiante" name="fecha_estudiante"
                           max="<?php echo date('d-m-Y'); ?>" onchange="calcularEdad()" required></label>
                       <label>Edad: <input type="text" id="edad_estudiante" pattern="[0-9]{1,3}" name="edad_estudiante"
                           title="Ingrese una edad valida." required readonly></label>
                       <label>Lugar de Nacimiento: <input type="text" id="lugar_nacimiento" name="lugar_nacimiento"
-                          pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ, .]+" title="Solo se permiten letras, números, comas y puntos" required
-                          minlength="5" maxlength="80"></label>
+                          pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ, .]+" title="Solo se permiten letras, números, comas y puntos"
+                          minlength="5" maxlength="80" required></label>
                       <label>Estado: <input type="text" id="estado_estudiante" name="estado_estudiante"
-                          pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos" required
+                          pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos"required
                           maxlength="20"></label>
                       <label>Nacionalidad:
-                        <select id="nacionalidad_estudiante" name="nacionalidad_estudiante">
+                        <select id="nacionalidad_estudiante" name="nacionalidad_estudiante" required>
                           <?php
                           include_once '../php/conexion.php';
                           $sentencia = "SELECT * FROM nacionalidad";
@@ -178,7 +178,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
                             $codigo = $r['codigo_nacionalidad'];
                             $nombre = $r['descripcion'];
                             ?>
-                            <option required value="<?php echo $codigo ?>">
+                            <option value="<?php echo $codigo ?>">
                               <?php echo $nombre ?>
                             </option>
                             <?php
@@ -187,8 +187,8 @@ if (!isset($_SESSION['codigo_usuario'])) {
                         </select>
                       </label>
                       <label>Procedencia: <input type="text" id="procedencia_estudiante" pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ ]+"
-                          title="Caracteres no permitidos, solo se aceptan letras y numeros."
-                          name="procedencia_estudiante" required maxlength="50"></label>
+                          title="Caracteres no permitidos, solo se aceptan letras y numeros." required
+                          name="procedencia_estudiante" maxlength="50"></label>
                       <label>Sexo:
                         <select id="sexo_hermano" name="sexo_hermano">
                           <option value="No">No</option>
@@ -203,11 +203,11 @@ if (!isset($_SESSION['codigo_usuario'])) {
                         </select>
                       </label>
                       <label>¿Cuántos Hermanos?: <input id="cantidad_hermano" name="cantidad_hermano" type="text"
-                          pattern="[0-9]+" title="Solo números permitidos" required minlength="1" maxlength="2"
+                          pattern="[0-9]+" title="Solo números permitidos" minlength="1" maxlength="2"
                           value=0></label>
 
                       <label>Lugar entre Hermanos: <input type="text" id="lugar_hermano" pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ ]+"
-                          title="Caracteres no permitidos" required maxlength="20" name="lugar_hermano" 
+                          title="Caracteres no permitidos" maxlength="20" name="lugar_hermano"
                           value=" "></label>
                       <script>
                         function toggleCamposHermanos() {
@@ -235,41 +235,82 @@ if (!isset($_SESSION['codigo_usuario'])) {
                     <h2>Antecedentes Paranetales</h2><br>
                     <form>
                       <label>¿Qué enfermedad ha padecido?: <input type="text" id="enfermedad" name="enfermedad"
-                          pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo se permiten letras, números, comas y puntos" required
-                          maxlength="50"></label>
-                      <label>¿Ha estado el niño hospitalizado?: <select id="hospitalizado" name="hospitalizado">
-                          <option value="si">Sí</option>
-                          <option value="no">No</option>
+                          pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo se permiten letras, números, comas y puntos"
+                          maxlength="50" required></label>
+                      <label>¿Ha estado el niño hospitalizado?: <select id="hospitalizado" name="hospitalizado" required>
+                          <option value="0">No</option>
+                          <option value="1">Sí</option>
                         </select></label>
-                      <label>Presenta alguna alergia a medicamento, polvo, compuesto alimenticio?: <input id="alergias"
-                          required type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"
+                      <label>Motivo de hospitalizacion: <input id="motivoHospitalizacion"
+                        disabled type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"
+                        title="Solo se permiten letras, números, comas y puntos" maxlength="50"
+                        name="motivoHospitalizacion" required></label>
+                        <label>¿Presenta alguna alergia a medicamento, polvo, compuesto alimenticio?: <select id="presentaAlergia" name="presentaAlergia" required>
+                        <option value="0">No</option>
+                          <option value="1">Sí</option>
+                        </select></label>
+                      <label>¿A qué presenta alergia?: <input id="alergias" disabled
+                         type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"
                           title="Solo se permiten letras, números, comas y puntos" maxlength="50"
-                          name="alergias"></label>
-                      <label>Padece alguna condición: <input id="condicion" type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"
-                          title="Solo se permiten letras, números, comas y puntos" required maxlength="50"
+                          name="alergias" required></label>
+                      <label>¿Padece alguna condición:?: <select id="padeceCondicion" name="padeceCondicion" required>
+                      <option value="0">No</option>
+                      <option value="1">Sí</option>
+                      </select></label>
+                      <label>¿Qué condición?: <input id="condicion" type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"
+                          title="Solo se permiten letras, números, comas y puntos" maxlength="50" disabled required
                           name="condicion"></label>
-                      <label>Presentó informe:
-                        <select id="informe" name="informe">
-                          <option value="si">Sí</option>
-                          <option value="no">No</option>
+                      <label>Presentó informe: 
+                        <select id="informe" name="informe" required>
+                          <option value="0">No</option>
+                          <option value="1">Sí</option>
                         </select>
                       </label>
-                      <label>Padece alguna limitación motora: <input id="limitacion" type="text"
-                          pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo se permiten letras, números, comas y puntos" required
-                          maxlength="50" name="limitacion"></label>
-                      <label>¿Es atendido(a) por especialista?: <input id="especialista" type="text"
-                          pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo se permiten letras, números, comas y puntos" required
-                          maxlength="50" name="especialista"></label>
-                      <label>Datos del Dr.: <input id="doctor" type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"
-                          title="Solo se permiten letras, números, comas y puntos" required maxlength="50"
+                      <label>Padece alguna limitación de algun tipo: <select id="limitacion" type="text"
+                          pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo se permiten letras, números, comas y puntos"
+                          maxlength="50" name="limitacion" required>
+                          <option value="null">Ninguna</option>
+                          <option value="1">Motora</option>
+                          <option value="2">de Crecimiento</option>
+                          <option value="3">Auditiva</option>
+                          <option value="4">Visual</option>
+                        </select></label>
+                      <label>¿Es atendido(a) por especialista?: <select id="especialista"
+                          maxlength="50" name="especialista" required>
+                          <option value="0">No</option>
+                          <option value="1">Si</option>
+                        </select></label>
+                      <label>Datos del Dr.: <input id="doctor" type="text" pattern="[A-Za-z0-9,.ñÑáéíóúüÁÉÍÓÚÜ ]+"disabled
+                          title="Solo se permiten letras, números, comas y puntos" maxlength="50" required
                           name="doctor"></label>
                       <label>¿Tiene tendencia a enfermarse con facilidad?:
-                        <select id="enfermar_facilidad" name="enfermar_facilidad">
-                          <option value="si">Sí</option>
-                          <option value="no">No</option>
+                        <select id="enfermar_facilidad" name="enfermar_facilidad" required>
+                        <option value="0">No</option>
+                          <option value="1">Sí</option>
                         </select>
                       </label>
                     </form>
+                    <script>
+                      const hospitalizadoInput = document.getElementById("hospitalizado");
+                      const motivoHospitalizacionInput = document.getElementById("motivoHospitalizacion");
+                      const presentaAlergiasInput = document.getElementById("presentaAlergia");
+                      const alergiasInput = document.getElementById("alergias");
+                      const presentaCondicionInput = document.getElementById("padeceCondicion");
+                      const condicionInput = document.getElementById("condicion");
+                      const especialistaInput = document.getElementById("especialista");
+                      const doctorInput = document.getElementById("doctor");
+
+                      changeInput(hospitalizadoInput, motivoHospitalizacionInput);
+                      changeInput(presentaAlergiasInput, alergiasInput);
+                      changeInput(presentaCondicionInput, condicionInput);
+                      changeInput(especialistaInput, doctorInput)
+
+                      function changeInput(select, detalles){
+                        select.addEventListener('change', ()=>{
+                        detalles.disabled = (detalles.disabled)? false: true;
+                      });
+                      }
+                    </script>
                     <button class="btn" onclick="validateAndShowSection('estudiante', 'antecedentes')">Atrás</button>
                     <button class="btn"
                       onclick="validateAndShowSection('representante', 'antecedentes')">Siguiente</button>
@@ -566,7 +607,10 @@ if (!isset($_SESSION['codigo_usuario'])) {
           // Obtener los valores de los campos de antecedentes prenatales
           var enfermedad = document.getElementById('enfermedad').value;
           var hospitalizado = document.getElementById('hospitalizado').value;
+          var motivoHospitalizacion =document.getElementById('motivoHospitalizacion').value;
+          var presentaAlergia = document.getElementById('presentaAlergia').value;
           var alergias = document.getElementById('alergias').value;
+          var padeceCondicion = document.getElementById('padeceCondicion').value;
           var condicion = document.getElementById('condicion').value;
           var informe = document.getElementById('informe').value;
           var limitacion = document.getElementById('limitacion').value;
@@ -618,101 +662,117 @@ if (!isset($_SESSION['codigo_usuario'])) {
           // Obtener los valores de los campos de la persona autorizada en caso de emergencia
           var nombreCaso = document.getElementById('nombre_caso').value;
           // Enviar los datos a guardar_inscripcion.php
-          $.ajax({
-            type: "POST",
-            url: "guardar_inscripcion.php",
-            data: {
-              // Datos del estudiante
-              cedulaEstudiante: cedulaEstudiante,
-              apellidosEstudiante: apellidosEstudiante,
-              nombresEstudiante: nombresEstudiante,
-              fechaEstudiante: fechaEstudiante,
-              edadEstudiante: edadEstudiante,
-              lugarNacimiento: lugarNacimiento,
-              estadoEstudiante: estadoEstudiante,
-              nacionalidadEstudiante: nacionalidadEstudiante,
-              procedenciaEstudiante: procedenciaEstudiante,
-              estadoHermano: estadoHermano,
-              cantidadHermano: cantidadHermano,
-              sexoHermano: sexoHermano,
-              lugarHermano: lugarHermano,
 
-              // Antecedentes prenatales
-              enfermedad: enfermedad,
-              hospitalizado: hospitalizado,
-              alergias: alergias,
-              condicion: condicion,
-              informe: informe,
-              limitacion: limitacion,
-              especialista: especialista,
-              doctor: doctor,
-              enfermarFacilidad: enfermarFacilidad,
-
-              // Representante legal
-              cedulaRepresentante: cedulaRepresentante,
-              apellidosRepresentante: apellidosRepresentante,
-              nombresRepresentante: nombresRepresentante,
-              telefonoRepresentante: telefonoRepresentante,
-              codigoParentesco: codigoParentesco,
-
-              // Datos de la madre
-              cedulaMama: cedulaMama,
-              apellidosMama: apellidosMama,
-              nombresMama: nombresMama,
-              codigoCivilMama: codigoCivilMama,
-              nacionalidadMama: nacionalidadMama,
-              edadMama: edadMama,
-              direccionHMama: direccionHMama,
-              telefonoHMama: telefonoHMama,
-              direccionTMama: direccionTMama,
-              telefonoTMama: telefonoTMama,
-              nivelMama: nivelMama,
-              ocupacionMama: ocupacionMama,
-              profesionMama: profesionMama,
-              correoMama: correoMama,
-              datosMama: datosMama,
-
-              // Datos del padre
-              cedulaPapa: cedulaPapa,
-              apellidosPapa: apellidosPapa,
-              nombresPapa: nombresPapa,
-              estadoPapa: estadoPapa,
-              nacionalidadPapa: nacionalidadPapa,
-              edadPapa: edadPapa,
-              direccionHPapa: direccionHPapa,
-              telefonoHPapa: telefonoHPapa,
-              direccionTPapa: direccionTPapa,
-              telefonoTPapa: telefonoTPapa,
-              nivelPapa: nivelPapa,
-              ocupacionPapa: ocupacionPapa,
-              profesionPapa: profesionPapa,
-              correoPapa: correoPapa,
-              datosPapa: datosPapa,
-
-              // Persona autorizada en caso de emergencia
-              nombreCaso: nombreCaso
-            },
-            success: function (response) {
-              // Manejar la respuesta del servidor, si es necesario
-              console.log(response);
-
-              // Verificar si la respuesta es positiva
-              if (response.includes("Se ha inscrito exitosamente.")) {
-                alert("Se ha inscrito el estudiante");
-
-                // Redireccionar a la página de inscripción con la cédula del estudiante
-                window.location.href = "inscripcion.php?cedulaEstudiante=" + cedulaEstudiante;
-              } else {
-                // Mostrar mensaje de error
-                alert("Error en la inscripción:\n" + response);
-              }
-            },
-            error: function (xhr, status, error) {
-              // Manejar errores de la petición AJAX, si es necesario
-              console.error(xhr.responseText);
-              alert("Error en la solicitud AJAX");
+          let request = new XMLHttpRequest();
+          request.open("POST", "guardar_inscripcion.php");
+          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          request.onload = function (){
+            console.log(this.responseText);
+            if(this.responseText.includes("Se ha inscrito exitosamente")){
+              alert("Se ha inscrito el estudiante");
+              window.location.href("../php/generar_planillainscripcion.php");
             }
-          });
+          }
+          request.send(`cedulaEstudiante=${cedulaEstudiante}&apellidosEstudiante=${apellidosEstudiante}&nombresEstudiante=${nombresEstudiante}&fechaEstudiante=${fechaEstudiante}&edadEstudiante=${edadEstudiante}&lugarNacimiento=${lugarNacimiento}&estadoEstudiante=${estadoEstudiante}&nacionalidadEstudiante=${nacionalidadEstudiante}&procedenciaEstudiante=${procedenciaEstudiante}&estadoHermano=${estadoHermano}&cantidadHermano=${cantidadHermano}&sexoHermano=${sexoHermano}&lugarHermano=${lugarHermano}&enfermedad=${enfermedad}&hospitalizado=${hospitalizado}&motivoHospitalizacion=${motivoHospitalizacion}&presentaAlergia=${presentaAlergia}&alergias=${alergias}&padeceCondicion${padeceCondicion}&condicion=${condicion}&informe${informe}&limitacion=${limitacion}&especialista=${especialista}&doctor=${doctor}&enfermarFacilidad=${enfermarFacilidad}&cedulaRepresentante=${cedulaRepresentante}&apellidosRepresentante=${apellidosRepresentante}&nombresRepresentante=${nombresRepresentante}&telefonoRepresentante=${telefonoRepresentante}&codigoParentezco=${codigoParentesco}&cedulaMama=${cedulaMama}&apellidosMama=${apellidosMama}&nombresMama=${nombresMama}&codigoCivilMama=${codigoCivilMama}&nacionalidadMama=${nacionalidadMama}&edadMama=${edadMama}&direccionHMama=${direccionHMama}&telefonoHMama=${telefonoHMama}&direccionTMama=${direccionTMama}&telefonoTMama=${telefonoTMama}&nivelMama=${nivelMama}&ocupacionMama=${ocupacionMama}&profesionMama=${profesionMama}&correoMama=${correoMama}&datosMama=${datosMama}&cedulaPapa=${cedulaPapa}&apellidosPapa=${apellidosPapa}&nombresPapa=${nombresPapa}&estadoPapa=${estadoPapa}&nacionalidadPapa=${nacionalidadPapa}&edadPapa=${edadPapa}&direccionHPapa=${direccionHPapa}&telefonoHPapa=${telefonoHPapa}&direccionTPapa=${direccionTPapa}&telefonoTPapa=${telefonoTPapa}&nivelPapa=${nivelPapa}&ocupacionPapa=${ocupacionPapa}&profesionPapa=${profesionPapa}&correoPapa=${correoPapa}&datosPapa=${datosPapa}`);
+
+          // $.ajax({
+          //   type: "POST",
+          //   url: "guardar_inscripcion.php",
+          //   data: {
+          //     // Datos del estudiante
+          //     cedulaEstudiante: cedulaEstudiante,
+          //     apellidosEstudiante: apellidosEstudiante,
+          //     nombresEstudiante: nombresEstudiante,
+          //     fechaEstudiante: fechaEstudiante,
+          //     edadEstudiante: edadEstudiante,
+              // lugarNacimiento: lugarNacimiento,
+          //     estadoEstudiante: estadoEstudiante,
+          //     nacionalidadEstudiante: nacionalidadEstudiante,
+          //     procedenciaEstudiante: procedenciaEstudiante,
+          //     estadoHermano: estadoHermano,
+          //     cantidadHermano: cantidadHermano,
+          //     sexoHermano: sexoHermano,
+          //     lugarHermano: lugarHermano,
+
+          //     // Antecedentes prenatales
+          //     enfermedad: enfermedad,
+          //     hospitalizado: hospitalizado,
+          //     motivoHospitalizacion: motivoHospitalizacion,
+          //     presentaAlergia: presentaAlergia,
+          //     alergias: alergias,
+          //     padeceCondicion: padeceCondicion,
+          //     condicion: condicion,
+          //     informe: informe,
+          //     limitacion: limitacion,
+          //     especialista: especialista,
+          //     doctor: doctor,
+          //     enfermarFacilidad: enfermarFacilidad,
+
+          //     // Representante legal
+          //     cedulaRepresentante: cedulaRepresentante,
+          //     apellidosRepresentante: apellidosRepresentante,
+          //     nombresRepresentante: nombresRepresentante,
+          //     telefonoRepresentante: telefonoRepresentante,
+          //     codigoParentesco: codigoParentesco,
+
+          //     // Datos de la madre
+          //     cedulaMama: cedulaMama,
+          //     apellidosMama: apellidosMama,
+          //     nombresMama: nombresMama,
+          //     codigoCivilMama: codigoCivilMama,
+          //     nacionalidadMama: nacionalidadMama,
+          //     edadMama: edadMama,
+          //     direccionHMama: direccionHMama,
+          //     telefonoHMama: telefonoHMama,
+          //     direccionTMama: direccionTMama,
+          //     telefonoTMama: telefonoTMama,
+          //     nivelMama: nivelMama,
+          //     ocupacionMama: ocupacionMama,
+          //     profesionMama: profesionMama,
+          //     correoMama: correoMama,
+          //     datosMama: datosMama,
+
+          //     // Datos del padre
+          //     cedulaPapa: cedulaPapa,
+          //     apellidosPapa: apellidosPapa,
+          //     nombresPapa: nombresPapa,
+          //     estadoPapa: estadoPapa,
+          //     nacionalidadPapa: nacionalidadPapa,
+          //     edadPapa: edadPapa,
+          //     direccionHPapa: direccionHPapa,
+          //     telefonoHPapa: telefonoHPapa,
+          //     direccionTPapa: direccionTPapa,
+          //     telefonoTPapa: telefonoTPapa,
+          //     nivelPapa: nivelPapa,
+          //     ocupacionPapa: ocupacionPapa,
+          //     profesionPapa: profesionPapa,
+          //     correoPapa: correoPapa,
+          //     datosPapa: datosPapa,
+
+          //     // Persona autorizada en caso de emergencia
+          //     nombreCaso: nombreCaso
+          //   },
+          //   success: function (response) {
+          //     // Manejar la respuesta del servidor, si es necesario
+          //     console.log(response);
+
+          //     // Verificar si la respuesta es positiva
+          //     if (response.includes("Se ha inscrito exitosamente.")) {
+          //       alert("Se ha inscrito el estudiante");
+
+          //       // Redireccionar a la página de inscripción con la cédula del estudiante
+          //       window.location.href = "inscripcion.php?cedulaEstudiante=" + cedulaEstudiante;
+          //     } else {
+          //       // Mostrar mensaje de error
+          //       alert("Error en la inscripción:\n" + response);
+          //     }
+          //   },
+          //   error: function (xhr, status, error) {
+          //     // Manejar errores de la petición AJAX, si es necesario
+          //     console.error(xhr.responseText);
+          //     alert("Error en la solicitud AJAX");
+          //   }
+          // });
         }</script>
       <script src="validaciones/busqueda.js"></script>
       <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
