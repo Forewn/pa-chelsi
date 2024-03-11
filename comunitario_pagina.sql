@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-03-2024 a las 14:03:18
+-- Tiempo de generación: 11-03-2024 a las 04:33:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,9 +46,9 @@ CREATE TABLE `antecedentes_paranatales` (
 --
 
 INSERT INTO `antecedentes_paranatales` (`codigo_antecedentes`, `enfermedad`, `hospitalizado`, `alergias`, `condicion`, `informe`, `limitacion`, `especialista`, `doctor`, `enfermar_facilidad`, `cedula_escolar`) VALUES
-(2, 'Ninguna', 'no', 'Ninguna', 'Ninguna', 'no', 'Ninguna', 'No ', 'Ninguno', 'no', '12010617729'),
-(3, 'ninguna', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', '12010617720'),
-(4, 'ninugna', 'no', 'no', 'no', 'si', 'no', 'no', 'no', 'si', '12010617728');
+(2, 'Ninguna', '0', 'Ninguna', 'Ninguna', 'no', '3', '0', 'Ninguno', '0', '12010617729'),
+(3, 'ninguna', 'Se partio una pata', 'no', '0', '0', '1', '0', 'no', '0', '12010617720'),
+(4, 'ninugna', '0', 'no', 'no', 'si', '2', '0', 'no', '0', '12010617728');
 
 -- --------------------------------------------------------
 
@@ -119,6 +119,7 @@ INSERT INTO `estado_civil` (`codigo_estadocivil`, `descripcion`) VALUES
 
 CREATE TABLE `estudiante` (
   `cedula_escolar` varchar(15) NOT NULL,
+  `Nacionalidad` char(2) NOT NULL,
   `nombres` varchar(35) NOT NULL,
   `apellidos` varchar(35) NOT NULL,
   `fecha_nacimiento` date DEFAULT NULL,
@@ -143,10 +144,10 @@ CREATE TABLE `estudiante` (
 -- Volcado de datos para la tabla `estudiante`
 --
 
-INSERT INTO `estudiante` (`cedula_escolar`, `nombres`, `apellidos`, `fecha_nacimiento`, `edad`, `lugar_nacimiento`, `estado`, `codigo_nacionalidad`, `estado_hermano`, `cantidad_hermano`, `sexo_hermano`, `lugar_hermano`, `cedula_representante`, `cedula_papa`, `cedula_mama`, `caso_emergencia`, `foto_estudiante`, `procedencia`, `estado_estudiante`) VALUES
-('12010617720', 'Jhosmar David', 'Suarez Contreras', '2003-01-26', '21', 'San Cristóbal', 'Táchira', 1, 'No', 0, 'H', ' ', '29699505', '29699505', '1233221', 3, NULL, 'Mismo Plantel', 1),
-('12010617728', 'prueba prueba', 'prueba prueba', '2022-12-29', '1', 'sisss', 'no', 1, 'No', 0, 'No', ' ', '11111111', '12345321', '1233221', 4, NULL, 'mismo plantel', 1),
-('12010617729', 'Chelsea Alexandra', 'Roa Hernández', '2020-05-24', '3', 'San Cristóbal', 'Táchira', 1, 'No', 0, 'V', ' ', '10617729', '10178114', '10617729', 2, NULL, 'Mismo Plantel', 3);
+INSERT INTO `estudiante` (`cedula_escolar`, `Nacionalidad`, `nombres`, `apellidos`, `fecha_nacimiento`, `edad`, `lugar_nacimiento`, `estado`, `codigo_nacionalidad`, `estado_hermano`, `cantidad_hermano`, `sexo_hermano`, `lugar_hermano`, `cedula_representante`, `cedula_papa`, `cedula_mama`, `caso_emergencia`, `foto_estudiante`, `procedencia`, `estado_estudiante`) VALUES
+('12010617720', 'V', 'Jhosmar David', 'Suarez Contreras', '2003-01-26', '21', 'San Cristóbal', 'Táchira', 1, 'No', 0, 'H', ' ', '29699505', '29699505', '1233221', 3, NULL, 'Mismo Plantel', 3),
+('12010617728', 'V', 'prueba prueba', 'prueba prueba', '2022-12-29', '1', 'sisss', 'no', 1, 'No', 0, 'No', ' ', '11111111', '12345321', '1233221', 4, NULL, 'mismo plantel', 1),
+('12010617729', 'V', 'Chelsea Alexandra', 'Roa Hernández', '2020-05-24', '3', 'San Cristóbal', 'Táchira', 1, 'No', 0, 'V', ' ', '10617729', '10178114', '10617729', 2, NULL, 'Mismo Plantel', 3);
 
 -- --------------------------------------------------------
 
@@ -365,16 +366,17 @@ CREATE TABLE `periodo_academico` (
   `codigo_periodo` int(3) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `fecha_inicio` date NOT NULL,
-  `fecha_fin` date NOT NULL
+  `fecha_fin` date NOT NULL,
+  `actual` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `periodo_academico`
 --
 
-INSERT INTO `periodo_academico` (`codigo_periodo`, `nombre`, `fecha_inicio`, `fecha_fin`) VALUES
-(1, '2023-2024', '2023-09-17', '2024-07-17'),
-(2, '2024-2025', '2024-09-17', '2025-07-17');
+INSERT INTO `periodo_academico` (`codigo_periodo`, `nombre`, `fecha_inicio`, `fecha_fin`, `actual`) VALUES
+(1, '2023-2024', '2023-09-17', '2024-07-17', 1),
+(2, '2024-2025', '2024-09-17', '2025-07-17', 0);
 
 -- --------------------------------------------------------
 
@@ -469,6 +471,35 @@ INSERT INTO `usuario` (`codigo_usuario`, `nombre_usuario`, `contrasena`, `tipode
 -- --------------------------------------------------------
 
 --
+-- Estructura Stand-in para la vista `v_estudiantesactivos`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `v_estudiantesactivos` (
+`cedula_escolar` varchar(15)
+,`nombres` varchar(35)
+,`apellidos` varchar(35)
+,`fecha_nacimiento` date
+,`edad` varchar(3)
+,`lugar_nacimiento` varchar(80)
+,`estado` varchar(20)
+,`codigo_nacionalidad` int(3)
+,`estado_hermano` varchar(3)
+,`cantidad_hermano` int(3)
+,`sexo_hermano` varchar(3)
+,`lugar_hermano` varchar(20)
+,`cedula_representante` varchar(10)
+,`cedula_papa` varchar(10)
+,`cedula_mama` varchar(10)
+,`caso_emergencia` int(3)
+,`foto_estudiante` longblob
+,`procedencia` varchar(50)
+,`estado_estudiante` int(3)
+,`cedula_escolar_b` varchar(15)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura Stand-in para la vista `v_planillainscripcion`
 -- (Véase abajo para la vista actual)
 --
@@ -477,6 +508,7 @@ CREATE TABLE `v_planillainscripcion` (
 ,`cedula_inscripcion` varchar(15)
 ,`cedula_estudiante` varchar(15)
 ,`apellidos_b` varchar(35)
+,`nacionalidad_b` char(2)
 ,`nombres_b` varchar(35)
 ,`fna_b` date
 ,`edad_b` varchar(3)
@@ -517,7 +549,25 @@ CREATE TABLE `v_planillainscripcion` (
 ,`ocupacion_pp` varchar(100)
 ,`profesion_pp` varchar(100)
 ,`correo_pp` varchar(50)
+,`enfermedad_AP` varchar(50)
+,`hospitalizado_AP` varchar(50)
+,`alergias_AP` varchar(50)
+,`condicion_AP` varchar(50)
+,`informe_AP` varchar(50)
+,`limitacion_AP` varchar(50)
+,`especialista_AP` varchar(50)
+,`doctor_AP` varchar(50)
+,`enfermar_facilidad_AP` varchar(50)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `v_estudiantesactivos`
+--
+DROP TABLE IF EXISTS `v_estudiantesactivos`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_estudiantesactivos`  AS   (select `a`.`cedula_escolar` AS `cedula_escolar`,`a`.`nombres` AS `nombres`,`a`.`apellidos` AS `apellidos`,`a`.`fecha_nacimiento` AS `fecha_nacimiento`,`a`.`edad` AS `edad`,`a`.`lugar_nacimiento` AS `lugar_nacimiento`,`a`.`estado` AS `estado`,`a`.`codigo_nacionalidad` AS `codigo_nacionalidad`,`a`.`estado_hermano` AS `estado_hermano`,`a`.`cantidad_hermano` AS `cantidad_hermano`,`a`.`sexo_hermano` AS `sexo_hermano`,`a`.`lugar_hermano` AS `lugar_hermano`,`a`.`cedula_representante` AS `cedula_representante`,`a`.`cedula_papa` AS `cedula_papa`,`a`.`cedula_mama` AS `cedula_mama`,`a`.`caso_emergencia` AS `caso_emergencia`,`a`.`foto_estudiante` AS `foto_estudiante`,`a`.`procedencia` AS `procedencia`,`a`.`estado_estudiante` AS `estado_estudiante`,`b`.`cedula_escolar` AS `cedula_escolar_b` from ((`estudiante` `a` join `inscripcion` `b` on(`a`.`cedula_escolar` = `b`.`cedula_escolar`)) join `periodo_academico` `c` on(`c`.`codigo_periodo` = `b`.`codigo_periodo`)) where `c`.`actual` = 1)  ;
 
 -- --------------------------------------------------------
 
@@ -526,7 +576,7 @@ CREATE TABLE `v_planillainscripcion` (
 --
 DROP TABLE IF EXISTS `v_planillainscripcion`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_planillainscripcion`  AS   (select `a`.`codigo_inscripcion` AS `codigo_inscripcion`,`a`.`cedula_escolar` AS `cedula_inscripcion`,`b`.`cedula_escolar` AS `cedula_estudiante`,`b`.`apellidos` AS `apellidos_b`,`b`.`nombres` AS `nombres_b`,`b`.`fecha_nacimiento` AS `fna_b`,`b`.`edad` AS `edad_b`,`b`.`lugar_nacimiento` AS `lna_b`,`b`.`estado` AS `estado_b`,`r`.`cedula_representante` AS `cedula_r`,`r`.`nombres` AS `nombres_r`,`r`.`apellidos` AS `apellidos_r`,`r`.`telefono` AS `telefono_r`,`p`.`descripcion` AS `parentesco_r`,`b`.`cedula_mama` AS `cedula_mama`,`m`.`cedula_mama` AS `cedula_m`,`m`.`nombres` AS `nombres_m`,`m`.`apellidos` AS `apellidos_m`,`m`.`telefono` AS `telefono_m`,`m`.`codigo_estadocivil` AS `estadoCivil_m`,`m`.`edad` AS `edad_m`,`m`.`direccion_habitacion` AS `dh_m`,`m`.`telefono_habitacion` AS `th_m`,`m`.`direccion_trabajo` AS `dt_m`,`m`.`telefono_trabajo` AS `tt_m`,`m`.`codigo_nivelacademico` AS `nivelAcademico_m`,`m`.`ocupacion` AS `ocupacion_m`,`m`.`profesion` AS `profesion_m`,`m`.`correo` AS `correo_m`,`b`.`cedula_papa` AS `cedula_papa`,`pp`.`cedula_papa` AS `cedula_pp`,`pp`.`nombres` AS `nombres_pp`,`pp`.`apellidos` AS `apellidos_pp`,`pp`.`telefono` AS `telefono_pp`,`pp`.`codigo_estadocivil` AS `estadoCivil_pp`,`pp`.`edad` AS `edad_pp`,`pp`.`direccion_habitacion` AS `dh_pp`,`pp`.`telefono_habitacion` AS `th_pp`,`pp`.`direccion_trabajo` AS `dt_pp`,`pp`.`telefono_trabajo` AS `tt_pp`,`pp`.`codigo_nivelacademico` AS `nivelAcademico_pp`,`pp`.`ocupacion` AS `ocupacion_pp`,`pp`.`profesion` AS `profesion_pp`,`pp`.`correo` AS `correo_pp` from (((((`inscripcion` `a` join `estudiante` `b` on(`a`.`cedula_escolar` = `b`.`cedula_escolar`)) join `representante_legal` `r` on(`b`.`cedula_representante` = `r`.`cedula_representante`)) join `parentesco` `p` on(`p`.`codigo_parentesco` = `r`.`codigo_parentesco`)) join `mama` `m` on(`m`.`cedula_mama` = `b`.`cedula_mama`)) join `papa` `pp` on(`pp`.`cedula_papa` = `b`.`cedula_papa`)))  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_planillainscripcion`  AS   (select `a`.`codigo_inscripcion` AS `codigo_inscripcion`,`a`.`cedula_escolar` AS `cedula_inscripcion`,`b`.`cedula_escolar` AS `cedula_estudiante`,`b`.`apellidos` AS `apellidos_b`,`b`.`Nacionalidad` AS `nacionalidad_b`,`b`.`nombres` AS `nombres_b`,`b`.`fecha_nacimiento` AS `fna_b`,`b`.`edad` AS `edad_b`,`b`.`lugar_nacimiento` AS `lna_b`,`b`.`estado` AS `estado_b`,`r`.`cedula_representante` AS `cedula_r`,`r`.`nombres` AS `nombres_r`,`r`.`apellidos` AS `apellidos_r`,`r`.`telefono` AS `telefono_r`,`p`.`descripcion` AS `parentesco_r`,`b`.`cedula_mama` AS `cedula_mama`,`m`.`cedula_mama` AS `cedula_m`,`m`.`nombres` AS `nombres_m`,`m`.`apellidos` AS `apellidos_m`,`m`.`telefono` AS `telefono_m`,`m`.`codigo_estadocivil` AS `estadoCivil_m`,`m`.`edad` AS `edad_m`,`m`.`direccion_habitacion` AS `dh_m`,`m`.`telefono_habitacion` AS `th_m`,`m`.`direccion_trabajo` AS `dt_m`,`m`.`telefono_trabajo` AS `tt_m`,`m`.`codigo_nivelacademico` AS `nivelAcademico_m`,`m`.`ocupacion` AS `ocupacion_m`,`m`.`profesion` AS `profesion_m`,`m`.`correo` AS `correo_m`,`b`.`cedula_papa` AS `cedula_papa`,`pp`.`cedula_papa` AS `cedula_pp`,`pp`.`nombres` AS `nombres_pp`,`pp`.`apellidos` AS `apellidos_pp`,`pp`.`telefono` AS `telefono_pp`,`pp`.`codigo_estadocivil` AS `estadoCivil_pp`,`pp`.`edad` AS `edad_pp`,`pp`.`direccion_habitacion` AS `dh_pp`,`pp`.`telefono_habitacion` AS `th_pp`,`pp`.`direccion_trabajo` AS `dt_pp`,`pp`.`telefono_trabajo` AS `tt_pp`,`pp`.`codigo_nivelacademico` AS `nivelAcademico_pp`,`pp`.`ocupacion` AS `ocupacion_pp`,`pp`.`profesion` AS `profesion_pp`,`pp`.`correo` AS `correo_pp`,`ap`.`enfermedad` AS `enfermedad_AP`,`ap`.`hospitalizado` AS `hospitalizado_AP`,`ap`.`alergias` AS `alergias_AP`,`ap`.`condicion` AS `condicion_AP`,`ap`.`informe` AS `informe_AP`,`ap`.`limitacion` AS `limitacion_AP`,`ap`.`especialista` AS `especialista_AP`,`ap`.`doctor` AS `doctor_AP`,`ap`.`enfermar_facilidad` AS `enfermar_facilidad_AP` from ((((((`inscripcion` `a` join `estudiante` `b` on(`a`.`cedula_escolar` = `b`.`cedula_escolar`)) join `representante_legal` `r` on(`b`.`cedula_representante` = `r`.`cedula_representante`)) join `parentesco` `p` on(`p`.`codigo_parentesco` = `r`.`codigo_parentesco`)) join `mama` `m` on(`m`.`cedula_mama` = `b`.`cedula_mama`)) join `papa` `pp` on(`pp`.`cedula_papa` = `b`.`cedula_papa`)) join `antecedentes_paranatales` `ap` on(`ap`.`cedula_escolar` = `b`.`cedula_escolar`)))  ;
 
 --
 -- Índices para tablas volcadas
