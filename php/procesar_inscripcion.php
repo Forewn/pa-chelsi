@@ -42,11 +42,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $sqlActualizarEstado = "UPDATE estudiante SET estado_estudiante = 2 WHERE cedula_escolar = '$cedulaEscolar'";
                     $conexion->query($sqlActualizarEstado);
                 }
-
+                $sql5 = "SELECT * FROM inscripcion WHERE cedula_escolar = '$cedulaEscolar';";
+                $result5 = $conexion->query($sql5);
+                $inscripcion5 = $result5->fetch_assoc();
                 echo '
                 <script>
                     alert("Inscripción realizada con éxito.");
-                    window.location.href = "../admin/matricula.php";
+                    window.location.href = `../php/generar_planillainscripcion.php?codigoInscripcion=`'.$inscripcion5['codigo_inscripcion'].';
                 </script>';
             } else {
                 echo "Error al realizar la inscripción: " . $conexion->error;

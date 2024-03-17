@@ -151,7 +151,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
                     <h2>DATOS ESTUDIANTE</h2><br>
                     <form autocomplete="off" enctype="multipart/form-data">
                       <label>Cédula Escolar: <input type="text" id="cedula_escolar" name="cedula_escolar"
-                          pattern="\d{11}" title="Cédula escolar invalida, debe requerir 11 numeros.></label>
+                          pattern="\d{11}" title="Cédula escolar invalida, debe requerir 11 numeros." required></label>
                       <label>Apellidos: <input type="text" id="apellidos_estudiante" name="apellidos_estudiante"
                           pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+" title="Solo letras y espacios permitidos."
                           minlength="5" maxlength="35" required></label>
@@ -186,9 +186,28 @@ if (!isset($_SESSION['codigo_usuario'])) {
                           ?>
                         </select>
                       </label>
-                      <label>Procedencia: <input type="text" id="procedencia_estudiante" pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ ]+"
-                          title="Caracteres no permitidos, solo se aceptan letras y numeros." required
-                          name="procedencia_estudiante" maxlength="50"></label>
+                      <label>Procedencia: <select id="procedencia_estudiante" required
+                        name="procedencia_estudiante">
+                        <option value="0">Hogar</option>
+                        <option value="1">Del mismo plantel</option>
+                        <option value="2">Otro Plantel</option>
+                      </select>
+                      <script>
+                        const selectProcedencia = document.getElementById("procedencia_estudiante");
+                        selectProcedencia.addEventListener('change', ()=> {
+                          if(selectProcedencia.value == '2'){
+                            document.getElementById('otroPlantel').disabled = false;
+                          }
+                          else{
+                            document.getElementById('otroPlantel').disabled = true;
+                          }
+                        })
+                      </script>
+                      </label>
+                      <label>Plantel: <input type="text" id="otroPlantel" pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ ]+"
+                        title="Caracteres no permitidos, solo se aceptan letras y numeros." required
+                        name="otroPlantel" maxlength="30" disabled>
+                      </label>
                       <label>Sexo:
                         <select id="sexo_hermano" name="sexo_hermano">
                           <option value="No">No</option>
@@ -599,6 +618,9 @@ if (!isset($_SESSION['codigo_usuario'])) {
           var estadoEstudiante = document.getElementById('estado_estudiante').value;
           var nacionalidadEstudiante = document.getElementById('nacionalidad_estudiante').value;
           var procedenciaEstudiante = document.getElementById('procedencia_estudiante').value;
+          if(procedenciaEstudiante == 2){
+            procedenciaEstudiante = document.getElementById('otroPlantel').value;
+          }
           var estadoHermano = document.getElementById('estado_hermano').value;
           var cantidadHermano = document.getElementById('cantidad_hermano').value;
           var sexoHermano = document.getElementById('sexo_hermano').value;
@@ -663,116 +685,121 @@ if (!isset($_SESSION['codigo_usuario'])) {
           var nombreCaso = document.getElementById('nombre_caso').value;
           // Enviar los datos a guardar_inscripcion.php
 
-          let request = new XMLHttpRequest();
-          request.open("POST", "guardar_inscripcion.php");
-          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-          request.onload = function (){
-            console.log(this.responseText);
-            if(this.responseText.includes("Se ha inscrito exitosamente")){
-              alert("Se ha inscrito el estudiante");
-              window.location.href("../php/generar_planillainscripcion.php");
-            }
-          }
-          request.send(`cedulaEstudiante=${cedulaEstudiante}&apellidosEstudiante=${apellidosEstudiante}&nombresEstudiante=${nombresEstudiante}&fechaEstudiante=${fechaEstudiante}&edadEstudiante=${edadEstudiante}&lugarNacimiento=${lugarNacimiento}&estadoEstudiante=${estadoEstudiante}&nacionalidadEstudiante=${nacionalidadEstudiante}&procedenciaEstudiante=${procedenciaEstudiante}&estadoHermano=${estadoHermano}&cantidadHermano=${cantidadHermano}&sexoHermano=${sexoHermano}&lugarHermano=${lugarHermano}&enfermedad=${enfermedad}&hospitalizado=${hospitalizado}&motivoHospitalizacion=${motivoHospitalizacion}&presentaAlergia=${presentaAlergia}&alergias=${alergias}&padeceCondicion${padeceCondicion}&condicion=${condicion}&informe${informe}&limitacion=${limitacion}&especialista=${especialista}&doctor=${doctor}&enfermarFacilidad=${enfermarFacilidad}&cedulaRepresentante=${cedulaRepresentante}&apellidosRepresentante=${apellidosRepresentante}&nombresRepresentante=${nombresRepresentante}&telefonoRepresentante=${telefonoRepresentante}&codigoParentezco=${codigoParentesco}&cedulaMama=${cedulaMama}&apellidosMama=${apellidosMama}&nombresMama=${nombresMama}&codigoCivilMama=${codigoCivilMama}&nacionalidadMama=${nacionalidadMama}&edadMama=${edadMama}&direccionHMama=${direccionHMama}&telefonoHMama=${telefonoHMama}&direccionTMama=${direccionTMama}&telefonoTMama=${telefonoTMama}&nivelMama=${nivelMama}&ocupacionMama=${ocupacionMama}&profesionMama=${profesionMama}&correoMama=${correoMama}&datosMama=${datosMama}&cedulaPapa=${cedulaPapa}&apellidosPapa=${apellidosPapa}&nombresPapa=${nombresPapa}&estadoPapa=${estadoPapa}&nacionalidadPapa=${nacionalidadPapa}&edadPapa=${edadPapa}&direccionHPapa=${direccionHPapa}&telefonoHPapa=${telefonoHPapa}&direccionTPapa=${direccionTPapa}&telefonoTPapa=${telefonoTPapa}&nivelPapa=${nivelPapa}&ocupacionPapa=${ocupacionPapa}&profesionPapa=${profesionPapa}&correoPapa=${correoPapa}&datosPapa=${datosPapa}`);
-
-          // $.ajax({
-          //   type: "POST",
-          //   url: "guardar_inscripcion.php",
-          //   data: {
-          //     // Datos del estudiante
-          //     cedulaEstudiante: cedulaEstudiante,
-          //     apellidosEstudiante: apellidosEstudiante,
-          //     nombresEstudiante: nombresEstudiante,
-          //     fechaEstudiante: fechaEstudiante,
-          //     edadEstudiante: edadEstudiante,
-              // lugarNacimiento: lugarNacimiento,
-          //     estadoEstudiante: estadoEstudiante,
-          //     nacionalidadEstudiante: nacionalidadEstudiante,
-          //     procedenciaEstudiante: procedenciaEstudiante,
-          //     estadoHermano: estadoHermano,
-          //     cantidadHermano: cantidadHermano,
-          //     sexoHermano: sexoHermano,
-          //     lugarHermano: lugarHermano,
-
-          //     // Antecedentes prenatales
-          //     enfermedad: enfermedad,
-          //     hospitalizado: hospitalizado,
-          //     motivoHospitalizacion: motivoHospitalizacion,
-          //     presentaAlergia: presentaAlergia,
-          //     alergias: alergias,
-          //     padeceCondicion: padeceCondicion,
-          //     condicion: condicion,
-          //     informe: informe,
-          //     limitacion: limitacion,
-          //     especialista: especialista,
-          //     doctor: doctor,
-          //     enfermarFacilidad: enfermarFacilidad,
-
-          //     // Representante legal
-          //     cedulaRepresentante: cedulaRepresentante,
-          //     apellidosRepresentante: apellidosRepresentante,
-          //     nombresRepresentante: nombresRepresentante,
-          //     telefonoRepresentante: telefonoRepresentante,
-          //     codigoParentesco: codigoParentesco,
-
-          //     // Datos de la madre
-          //     cedulaMama: cedulaMama,
-          //     apellidosMama: apellidosMama,
-          //     nombresMama: nombresMama,
-          //     codigoCivilMama: codigoCivilMama,
-          //     nacionalidadMama: nacionalidadMama,
-          //     edadMama: edadMama,
-          //     direccionHMama: direccionHMama,
-          //     telefonoHMama: telefonoHMama,
-          //     direccionTMama: direccionTMama,
-          //     telefonoTMama: telefonoTMama,
-          //     nivelMama: nivelMama,
-          //     ocupacionMama: ocupacionMama,
-          //     profesionMama: profesionMama,
-          //     correoMama: correoMama,
-          //     datosMama: datosMama,
-
-          //     // Datos del padre
-          //     cedulaPapa: cedulaPapa,
-          //     apellidosPapa: apellidosPapa,
-          //     nombresPapa: nombresPapa,
-          //     estadoPapa: estadoPapa,
-          //     nacionalidadPapa: nacionalidadPapa,
-          //     edadPapa: edadPapa,
-          //     direccionHPapa: direccionHPapa,
-          //     telefonoHPapa: telefonoHPapa,
-          //     direccionTPapa: direccionTPapa,
-          //     telefonoTPapa: telefonoTPapa,
-          //     nivelPapa: nivelPapa,
-          //     ocupacionPapa: ocupacionPapa,
-          //     profesionPapa: profesionPapa,
-          //     correoPapa: correoPapa,
-          //     datosPapa: datosPapa,
-
-          //     // Persona autorizada en caso de emergencia
-          //     nombreCaso: nombreCaso
-          //   },
-          //   success: function (response) {
-          //     // Manejar la respuesta del servidor, si es necesario
-          //     console.log(response);
-
-          //     // Verificar si la respuesta es positiva
-          //     if (response.includes("Se ha inscrito exitosamente.")) {
-          //       alert("Se ha inscrito el estudiante");
-
-          //       // Redireccionar a la página de inscripción con la cédula del estudiante
-          //       window.location.href = "inscripcion.php?cedulaEstudiante=" + cedulaEstudiante;
-          //     } else {
-          //       // Mostrar mensaje de error
-          //       alert("Error en la inscripción:\n" + response);
+          // let request = new XMLHttpRequest();
+          // request.open("POST", "guardar_inscripcion.php");
+          // request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          // request.onload = function (){
+          //   console.log(this.responseText);
+          //   if(this.responseText.includes("Se ha inscrito exitosamente")){
+          //     alert("Se ha inscrito el estudiante");
+          //     var xhr = new XMLHttpRequest();
+          //     xhr.open('GET', `getCodigoInscripcion.php?cedula=${cedulaEstudiante}`);
+          //     xhr.onload = function(){
+          //       window.location.href = (`../php/generar_planillainscripcion.php?codigoInscripcion=${this.responseText}`);
           //     }
-          //   },
-          //   error: function (xhr, status, error) {
-          //     // Manejar errores de la petición AJAX, si es necesario
-          //     console.error(xhr.responseText);
-          //     alert("Error en la solicitud AJAX");
+          //     xhr.send();
           //   }
-          // });
+          // }
+          // request.send(`cedulaEstudiante=${cedulaEstudiante}&apellidosEstudiante=${apellidosEstudiante}&nombresEstudiante=${nombresEstudiante}&fechaEstudiante=${fechaEstudiante}&edadEstudiante=${edadEstudiante}&lugarNacimiento=${lugarNacimiento}&estadoEstudiante=${estadoEstudiante}&nacionalidadEstudiante=${nacionalidadEstudiante}&procedenciaEstudiante=${procedenciaEstudiante}&estadoHermano=${estadoHermano}&cantidadHermano=${cantidadHermano}&sexoHermano=${sexoHermano}&lugarHermano=${lugarHermano}&enfermedad=${enfermedad}&hospitalizado=${hospitalizado}&motivoHospitalizacion=${motivoHospitalizacion}&presentaAlergia=${presentaAlergia}&alergias=${alergias}&padeceCondicion${padeceCondicion}&condicion=${condicion}&informe${informe}&limitacion=${limitacion}&especialista=${especialista}&doctor=${doctor}&enfermarFacilidad=${enfermarFacilidad}&cedulaRepresentante=${cedulaRepresentante}&apellidosRepresentante=${apellidosRepresentante}&nombresRepresentante=${nombresRepresentante}&telefonoRepresentante=${telefonoRepresentante}&codigoParentezco=${codigoParentesco}&cedulaMama=${cedulaMama}&apellidosMama=${apellidosMama}&nombresMama=${nombresMama}&codigoCivilMama=${codigoCivilMama}&nacionalidadMama=${nacionalidadMama}&edadMama=${edadMama}&direccionHMama=${direccionHMama}&telefonoHMama=${telefonoHMama}&direccionTMama=${direccionTMama}&telefonoTMama=${telefonoTMama}&nivelMama=${nivelMama}&ocupacionMama=${ocupacionMama}&profesionMama=${profesionMama}&correoMama=${correoMama}&datosMama=${datosMama}&cedulaPapa=${cedulaPapa}&apellidosPapa=${apellidosPapa}&nombresPapa=${nombresPapa}&estadoPapa=${estadoPapa}&nacionalidadPapa=${nacionalidadPapa}&edadPapa=${edadPapa}&direccionHPapa=${direccionHPapa}&telefonoHPapa=${telefonoHPapa}&direccionTPapa=${direccionTPapa}&telefonoTPapa=${telefonoTPapa}&nivelPapa=${nivelPapa}&ocupacionPapa=${ocupacionPapa}&profesionPapa=${profesionPapa}&correoPapa=${correoPapa}&datosPapa=${datosPapa}`);
+
+          $.ajax({
+            type: "POST",
+            url: "guardar_inscripcion.php",
+            data: {
+              // Datos del estudiante
+              cedulaEstudiante: cedulaEstudiante,
+              apellidosEstudiante: apellidosEstudiante,
+              nombresEstudiante: nombresEstudiante,
+              fechaEstudiante: fechaEstudiante,
+              edadEstudiante: edadEstudiante,
+              lugarNacimiento: lugarNacimiento,
+              estadoEstudiante: estadoEstudiante,
+              nacionalidadEstudiante: nacionalidadEstudiante,
+              procedenciaEstudiante: procedenciaEstudiante,
+              estadoHermano: estadoHermano,
+              cantidadHermano: cantidadHermano,
+              sexoHermano: sexoHermano,
+              lugarHermano: lugarHermano,
+
+              // Antecedentes prenatales
+              enfermedad: enfermedad,
+              hospitalizado: hospitalizado,
+              motivoHospitalizacion: motivoHospitalizacion,
+              presentaAlergia: presentaAlergia,
+              alergias: alergias,
+              padeceCondicion: padeceCondicion,
+              condicion: condicion,
+              informe: informe,
+              limitacion: limitacion,
+              especialista: especialista,
+              doctor: doctor,
+              enfermarFacilidad: enfermarFacilidad,
+
+              // Representante legal
+              cedulaRepresentante: cedulaRepresentante,
+              apellidosRepresentante: apellidosRepresentante,
+              nombresRepresentante: nombresRepresentante,
+              telefonoRepresentante: telefonoRepresentante,
+              codigoParentesco: codigoParentesco,
+
+              // Datos de la madre
+              cedulaMama: cedulaMama,
+              apellidosMama: apellidosMama,
+              nombresMama: nombresMama,
+              codigoCivilMama: codigoCivilMama,
+              nacionalidadMama: nacionalidadMama,
+              edadMama: edadMama,
+              direccionHMama: direccionHMama,
+              telefonoHMama: telefonoHMama,
+              direccionTMama: direccionTMama,
+              telefonoTMama: telefonoTMama,
+              nivelMama: nivelMama,
+              ocupacionMama: ocupacionMama,
+              profesionMama: profesionMama,
+              correoMama: correoMama,
+              datosMama: datosMama,
+
+              // Datos del padre
+              cedulaPapa: cedulaPapa,
+              apellidosPapa: apellidosPapa,
+              nombresPapa: nombresPapa,
+              estadoPapa: estadoPapa,
+              nacionalidadPapa: nacionalidadPapa,
+              edadPapa: edadPapa,
+              direccionHPapa: direccionHPapa,
+              telefonoHPapa: telefonoHPapa,
+              direccionTPapa: direccionTPapa,
+              telefonoTPapa: telefonoTPapa,
+              nivelPapa: nivelPapa,
+              ocupacionPapa: ocupacionPapa,
+              profesionPapa: profesionPapa,
+              correoPapa: correoPapa,
+              datosPapa: datosPapa,
+
+              // Persona autorizada en caso de emergencia
+              nombreCaso: nombreCaso
+            },
+            success: function (response) {
+              // Manejar la respuesta del servidor, si es necesario
+              console.log(response);
+
+              // Verificar si la respuesta es positiva
+              if (response.includes("Se ha inscrito exitosamente.")) {
+                alert("Se ha inscrito el estudiante");
+
+                // Redireccionar a la página de inscripción con la cédula del estudiante
+                window.location.href = "inscripcion.php?cedulaEstudiante=" + cedulaEstudiante;
+              } else {
+                // Mostrar mensaje de error
+                alert("Error en la inscripción:\n" + response);
+              }
+            },
+            error: function (xhr, status, error) {
+              // Manejar errores de la petición AJAX, si es necesario
+              console.error(xhr.responseText);
+              alert("Error en la solicitud AJAX");
+            }
+          });
         }</script>
       <script src="validaciones/busqueda.js"></script>
       <script src="../assets/libs/jquery/dist/jquery.min.js"></script>

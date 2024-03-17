@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera los datos de antecedentes prenatales
     $enfermedad = $_POST['enfermedad'];
     $hospitalizado = $_POST['hospitalizado'];
-    // $hospitalizado = ($hospitalizado == 0)? $hospitalizado : htmlspecialchars($_POST['motivoHospitalizacion']);
+    $hospitalizado = ($hospitalizado == 0)? $hospitalizado : htmlspecialchars($_POST['motivoHospitalizacion']);
     $presentaAlergia = $_POST['presentaAlergia'];
-    // $presentaAlergia = ($presentaAlergia == 0)? $presentaAlergia: htmlspecialchars($_POST['alergias']);
-    $condicion = $_POST['pardeceCondicion']; 
-    // $condicion = ($condicion == 0)? $condicion: htmlspecialchars($_POST['condicion']);
+    $presentaAlergia = ($presentaAlergia == 0)? $presentaAlergia: htmlspecialchars($_POST['alergias']);
+    $condicion = $_POST['padeceCondicion']; 
+    $condicion = ($condicion == 0)? $condicion: htmlspecialchars($_POST['condicion']);
     $informe = $_POST['informe'];
     $limitacion = $_POST['limitacion'];
     $especialista = $_POST['especialista'];
@@ -183,7 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Agregar nuevo estudiante
-        $sql = "INSERT INTO estudiante (cedula_escolar, nombres, apellidos, fecha_nacimiento, edad, lugar_nacimiento, estado, codigo_nacionalidad, procedencia, estado_hermano, cantidad_hermano, lugar_hermano, cedula_representante, cedula_mama, cedula_papa, caso_emergencia, sexo_hermano) VALUES ('$cedulaEstudiante', '$nombresEstudiante', '$apellidosEstudiante', '$fechaEstudiante', '$edadEstudiante', '$lugarNacimiento', '$estadoEstudiante', '$nacionalidadEstudiante', '$procedenciaEstudiante', '$estadoHermano', '$cantidadHermano', '$lugarHermano', '$cedulaRepresentante', '$cedulaMama', '$cedulaPapa', '$codigoCasoEmergencia', '$sexoHermano')";
+        $sql = "INSERT INTO estudiante (cedula_escolar, Nacionalidad, nombres, apellidos, fecha_nacimiento, edad, lugar_nacimiento, estado, codigo_nacionalidad, procedencia, estado_hermano, cantidad_hermano, lugar_hermano, cedula_representante, cedula_mama, cedula_papa, caso_emergencia, sexo_hermano) VALUES ('$cedulaEstudiante', '$nacionalidadEstudiante', '$nombresEstudiante', '$apellidosEstudiante', '$fechaEstudiante', '$edadEstudiante', '$lugarNacimiento', '$estadoEstudiante', '$nacionalidadEstudiante', '$procedenciaEstudiante', '$estadoHermano', '$cantidadHermano', '$lugarHermano', '$cedulaRepresentante', '$cedulaMama', '$cedulaPapa', '$codigoCasoEmergencia', '$sexoHermano')";
         $resultEstudiante = $conexion->query($sql);
 
         if ($resultEstudiante) {
@@ -196,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Se ha inscrito exitosamente.";
             } else {
                 // Error en antecedentes parentales
-                echo "Error al agregar antecedentes parentales: " . $conexion->error;
+                echo "Error al agregar antecedentes paranatales: " . $conexion->error;
             }
         } else {
             // Error en agregar estudiante

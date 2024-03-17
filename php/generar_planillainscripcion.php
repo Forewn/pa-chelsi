@@ -61,8 +61,7 @@
             $this->Text($x, $y-1, "X");
             $this->SetFont('Arial', '', 7);
         }
-        function body($datos){
-            
+        function body($datos, $conn){
             //Datos ninos
             $interlineado = 4;
             $apellidosN = $datos['apellidos_b'];
@@ -73,6 +72,10 @@
             $estadoN = $datos['estado_b'];
             $nacionalidadN = ($datos['nacionalidad_b'] == 'V')? "Venezolano": "Extranjero";
             $cedulaN = $datos['nacionalidad_b'].$datos['cedula_estudiante'];
+            $tieneHermanos = $datos['estadoHermano_b'];
+            $cantidadHermanos = $datos['cantidadHermano_b'];
+            $lugarHermanos = $datos['lugarHermano_b'];
+            $procedenciaN = $datos['procedencia_b'];
             $apellidosR = $datos['apellidos_r'];
             $nombresR = $datos['nombres_r'];
             $cedulaR = $datos['cedula_r'];
@@ -80,41 +83,63 @@
             $parentescoR = $datos['parentesco_r'];
             $apellidosM = $datos['apellidos_m'];
             $nombresM = $datos['nombres_m'];
-            $cedulaM = $datos['cedula_m'];
+            $signoM = ($datos['nacionalidad_m'] == 1)? 'V' : 'E';
+            $cedulaM = $signoM.$datos['cedula_m'];
             $telefonoM = $datos['telefono_m'];
-            $estadoM = "por hacer";
-            $nacionalidadM = "por hacer";
+            $aux = $datos['estadoCivil_m'];
+            $sql = "SELECT descripcion FROM estado_civil WHERE codigo_estadocivil = $aux;";
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $estadoM = $row['descripcion'];
+            $sql = "SELECT * FROM nacionalidad WHERE codigo_nacionalidad = ".$datos['nacionalidad_m'];
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $nacionalidadM = $row['descripcion'];
             $edadM = $datos['edad_m'];
             $correoM = $datos['correo_m'];
             $direccionMT = $datos['dt_m'];
             $telefonoMT = $datos['tt_m'];
             $telefonoMH = $datos['th_m'];
             $direccionMH = $datos['dh_m'];
-            $educacionM = "por hacer";
+            $sql = "SELECT descripcion FROM nivel_academico WHERE codigo_nivelacademico =".$datos['nivelAcademico_m'];
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $educacionM = $row['descripcion'];
             $ocupacionM = $datos['ocupacion_m'];
             $profesionM = $datos['profesion_m'];
-            $datosExtraM = "Por hacer";
+            $datosExtraM = $datos['datos_extra_m'];
             $apellidosP = $datos['apellidos_pp'];
             $nombresP = $datos['nombres_pp'];
-            $cedulaP = $datos['cedula_pp'];
+            $signoP = ($datos['nacionalidad_pp'] == 1)? 'V' : 'E';
+            $cedulaP = $signoP.$datos['cedula_pp'];
             $telefonoP = $datos['telefono_pp'];
-            $estadoP = "Por hacer";
-            $nacionalidadP = "pOR HACER";
+            $aux = $datos['estadoCivil_pp'];
+            $sql = "SELECT descripcion FROM estado_civil WHERE codigo_estadocivil = $aux;";
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $estadoP = $row['descripcion'];
+            $sql = "SELECT * FROM nacionalidad WHERE codigo_nacionalidad = ".$datos['nacionalidad_pp'];
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $nacionalidadP = $row['descripcion'];
             $edadP = $datos['edad_pp'];
             $correoP = $datos['correo_pp'];
             $telefonoPT = $datos['tt_pp'];
             $direccionPT =$datos['dt_pp'];
             $telefonoPH = $datos['th_pp'];
             $direccionPH = $datos['dh_pp'];
-            $educacionP = "Por hacer";
+            $sql = "SELECT descripcion FROM nivel_academico WHERE codigo_nivelacademico =".$datos['nivelAcademico_pp'];
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $educacionP = $row['descripcion'];
             $ocupacionP = $datos['ocupacion_pp'];
             $profesionP = $datos['profesion_pp'];
-            $datosExtraP = "Por hacer";
-            $enfermedad = "Asma";
+            $datosExtraP = $datos['datos_extra_pp'];
+            $enfermedad = $datos['enfermedad_AP'];
             $hospitalizado = $datos['hospitalizado_AP'];
             $motivoHospitalizacion = ($hospitalizado == 0)? "": $hospitalizado;
-            $alergia = 0;
-            $tipoalergia = "NO tengo";
+            $alergia = $datos['alergias_AP'];
+            $tipoalergia = ($alergia == 0)? "": $alergia;
             $tieneCondicion = $datos['condicion_AP'];
             $condicion = ($tieneCondicion == 0)? "" : $tieneCondicion;
             $presentaInforme = $datos['informe_AP'];
@@ -155,15 +180,24 @@
             $this->Ln($interlineado);
             $this->Write(5, "Procedencia: Hogar");
             $this->Line(33, $this->GetY()+4, 40, $this->GetY()+4);
-            $this->marcarX(((33+40)/2)-1, $this->GetY()+4);
             $this->SetX(40);
             $this->Write(5, "Del mismo plantel");
             $this->Line(61, $this->GetY()+4, 68, $this->GetY()+4);
-            $this->marcarX(((61+68)/2)-1, $this->GetY()+4);
             $this->SetX(68);
             $this->Write(5, "Otro plantel");
+            switch($procedenciaN){
+                case '0':
+                    $this->marcarX(((33+40)/2)-1, $this->GetY()+4);
+                    break;
+                case '1':
+                    $this->marcarX(((61+68)/2)-1, $this->GetY()+4);
+                    break;
+                default:
+                    $this->SetX(82);
+                    $this->resultado($procedenciaN);
+                    break;
+            }
             $this->Line(82, $this->GetY()+4, 130, $this->GetY()+4);
-            $this->marcarX(((82+130)/2)-1, $this->GetY()+4);
             $this->SetX(130);
             $this->Write(5, utf8_decode("Cédula escolar:"));
             $this->resultado($cedulaN);
@@ -171,15 +205,15 @@
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode("¿Tiene hermanos? Si:"));
             $this->Line(36, $this->GetY()+4, 46, $this->GetY()+4);
-            $this->marcarX(((36+46)/2)-1, $this->GetY()+4);
             $this->SetX(45);
             $this->Write(5, "No:");
             $this->Line(51, $this->GetY()+4, 60, $this->GetY()+4);
-            $this->marcarX(((51+60)/2)-1, $this->GetY()+4);
+            ($tieneHermanos == "Si")? $this->marcarX(((36+46)/2)-1, $this->GetY()+4) : $this->marcarX(((51+60)/2)-1, $this->GetY()+4);
             $this->SetX(61);
             $this->Write(5, utf8_decode("¿Cuántos?"));
             $this->Line(74, $this->GetY()+4, 83, $this->GetY()+4);
-            $this->marcarX(((74+83)/2)-1, $this->GetY()+4);
+            $this->SetX(74);
+            $this->resultado($cantidadHermanos);
             $this->SetX(82);
             $this->Write(5, utf8_decode("V: "));
             $this->Line(86, $this->GetY()+4, 93, $this->GetY()+4);
@@ -191,7 +225,8 @@
             $this->SetX(104);
             $this->Write(5, utf8_decode("Lugar entre hermanos: "));
             $this->Line(131, $this->GetY()+4, 166, $this->GetY()+4);
-            $this->marcarX(((131+166)/2)-1, $this->GetY()+4);
+            $this->SetX(131);
+            $this->resultado($lugarHermanos);
             $this->Ln($interlineado*2);
             $this->SetFont('Arial', 'B', 8);
             $this->Line(11, $this->GetY()+4, 47, $this->GetY()+4);
@@ -309,15 +344,15 @@
             $this->SetX(110);
             $this->Write(5, utf8_decode("Cédula: "));
             $this->resultado($cedulaR);
-            $this->Line(120, $this->GetY()+4, 133, $this->GetY()+4);
-            $this->SetX(133);
+            $this->Line(120, $this->GetY()+4, 135, $this->GetY()+4);
+            $this->SetX(135);
             $this->Write(5, utf8_decode("Teléfono: "));
             $this->resultado($telefonoR);
-            $this->Line(145, $this->GetY()+4, 160, $this->GetY()+4);
-            $this->SetX(160);
+            $this->Line(147, $this->GetY()+4, 162, $this->GetY()+4);
+            $this->SetX(162);
             $this->Write(5, "Parentezco: ");
             $this->resultado($parentescoR);
-            $this->Line(175, $this->GetY()+4, 200, $this->GetY()+4);
+            $this->Line(177, $this->GetY()+4, 200, $this->GetY()+4);
             $this->Ln($interlineado*2);
 
             //mADRE
@@ -336,11 +371,11 @@
             $this->SetX(110);
             $this->Write(5, utf8_decode("Cédula: "));
             $this->resultado($cedulaM);
-            $this->Line(120, $this->GetY()+4, 133, $this->GetY()+4);
-            $this->SetX(133);
+            $this->Line(120, $this->GetY()+4, 138, $this->GetY()+4);
+            $this->SetX(138);
             $this->Write(5, utf8_decode("Teléfono: "));
             $this->resultado($telefonoM);
-            $this->Line(145, $this->GetY()+4, 166, $this->GetY()+4);
+            $this->Line(150, $this->GetY()+4, 166, $this->GetY()+4);
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode("Estado civil: "));
             $this->resultado($estadoM);
@@ -410,11 +445,11 @@
             $this->SetX(110);
             $this->Write(5, utf8_decode("Cédula: "));
             $this->resultado($cedulaP);
-            $this->Line(120, $this->GetY()+4, 133, $this->GetY()+4);
-            $this->SetX(133);
+            $this->Line(120, $this->GetY()+4, 138, $this->GetY()+4);
+            $this->SetX(138);
             $this->Write(5, utf8_decode("Teléfono: "));
             $this->resultado($telefonoP);
-            $this->Line(145, $this->GetY()+4, 166, $this->GetY()+4);
+            $this->Line(150, $this->GetY()+4, 166, $this->GetY()+4);
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode("Estado civil: "));
             $this->resultado($estadoP);
@@ -475,6 +510,16 @@
             $this->SetFont('Arial', '', 7);
         }
         function footer(){
+            require 'conexion.php';
+            $sql = "SELECT * FROM v_planillainscripcion
+            WHERE codigo_inscripcion = '".$_SESSION['transporte']."';";
+            $result = mysqli_query($conexion, $sql);
+            $datos = mysqli_fetch_assoc($result);
+            $fecha = date('d/m/Y', strtotime($datos['fecha']));
+            $fecha = explode('/', $fecha);
+            $dia = $fecha[0];
+            $mes = $fecha[1];
+            $anio = $fecha[2];
             $this->SetY(-30);
             $this->SetX(100);
             $this->Write(5, "Directora (E)");
@@ -490,7 +535,7 @@
             $this->SetFont('Arial', '', 7);
             $this->SetY(-10);
             $this->SetX(-45);
-            $this->Cell(0, 5, utf8_decode("Dia: ".date('d'). " Mes: ". date('m'). " Año: ". date('Y')));
+            $this->Cell(0, 5, utf8_decode("Dia: ".$dia. " Mes: ". $mes. " Año: ". $anio));
         }
     }
     require 'conexion.php';
@@ -500,8 +545,7 @@
     $valores = mysqli_fetch_assoc($result);
     $pdf = new PDF('P', 'mm', 'Letter');
     $pdf->AddPage();
-    $pdf->body($valores);
-   
-
+    $pdf->body($valores, $conexion);
+    $_SESSION['transporte'] = $codigoInscripcion;
     $pdf->Output();
 ?> 
