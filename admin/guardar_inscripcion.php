@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $procedenciaEstudiante = $_POST['procedenciaEstudiante'];
     $estadoHermano = $_POST['estadoHermano'];
     $cantidadHermano = $_POST['cantidadHermano'];
-    $sexoHermano = $_POST['sexoHermano'];
     $lugarHermano = $_POST['lugarHermano'];
     // Agrega el resto de los campos del estudiante...
 
@@ -57,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $profesionMama = $_POST['profesionMama'];
     $correoMama = $_POST['correoMama'];
     $datosMama = $_POST['datosMama'];
+    $telefonoMama = $_POST['telefonoMama'];
     // Agrega el resto de los campos de la madre...
 
     // Recupera los datos del padre
@@ -75,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $profesionPapa = $_POST['profesionPapa'];
     $correoPapa = $_POST['correoPapa'];
     $datosPapa = $_POST['datosPapa'];
+    $telefonoPapa = $_POST['telefonoPapa'];
     // Agrega el resto de los campos del padre...
 
     // Recupera los datos de emergencia
@@ -141,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $codigoMama = $rowMama['cedula_mama'];
         } else {
             // No existe, agregar nuevo registro
-            $sqlAgregarMama = "INSERT INTO mama (cedula_mama, nombres, apellidos, codigo_estadocivil, codigo_nacionalidad, edad, direccion_habitacion, telefono_habitacion, direccion_trabajo, telefono_trabajo, codigo_nivelacademico, ocupacion, profesion, correo, datos_extras) VALUES ('$cedulaMama', '$nombresMama', '$apellidosMama', '$codigoCivilMama', '$nacionalidadMama', '$edadMama', '$direccionHMama', '$telefonoHMama', '$direccionTMama', '$telefonoTMama', '$nivelMama', '$ocupacionMama', '$profesionMama', '$correoMama', '$datosMama')";
+            $sqlAgregarMama = "INSERT INTO mama (cedula_mama, nombres, apellidos, codigo_estadocivil, codigo_nacionalidad, edad, direccion_habitacion, telefono_habitacion, direccion_trabajo, telefono_trabajo, codigo_nivelacademico, ocupacion, profesion, correo, datos_extras, telefono) VALUES ('$cedulaMama', '$nombresMama', '$apellidosMama', '$codigoCivilMama', '$nacionalidadMama', '$edadMama', '$direccionHMama', '$telefonoHMama', '$direccionTMama', '$telefonoTMama', '$nivelMama', '$ocupacionMama', '$profesionMama', '$correoMama', '$datosMama', '$telefonoMama')";
             $resultAgregarMama = $conexion->query($sqlAgregarMama);
 
             // Obtener el código recién insertado
@@ -158,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $codigoPapa = $rowPapa['cedula_papa'];
         } else {
             // No existe, agregar nuevo registro
-            $sqlAgregarPapa = "INSERT INTO papa (cedula_papa, nombres, apellidos, codigo_estadocivil, codigo_nacionalidad, edad, direccion_habitacion, telefono_habitacion, direccion_trabajo, telefono_trabajo, codigo_nivelacademico, ocupacion, profesion, correo, datos_extras) VALUES ('$cedulaPapa', '$nombresPapa', '$apellidosPapa', '$estadoPapa', '$nacionalidadPapa', '$edadPapa', '$direccionHPapa', '$telefonoHPapa', '$direccionTPapa', '$telefonoTPapa', '$nivelPapa', '$ocupacionPapa', '$profesionPapa', '$correoPapa', '$datosPapa')";
+            $sqlAgregarPapa = "INSERT INTO papa (cedula_papa, nombres, apellidos, codigo_estadocivil, codigo_nacionalidad, edad, direccion_habitacion, telefono_habitacion, direccion_trabajo, telefono_trabajo, codigo_nivelacademico, ocupacion, profesion, correo, datos_extras) VALUES ('$cedulaPapa', '$nombresPapa', '$apellidosPapa', '$estadoPapa', '$nacionalidadPapa', '$edadPapa', '$direccionHPapa', '$telefonoHPapa', '$direccionTPapa', '$telefonoTPapa', '$nivelPapa', '$ocupacionPapa', '$profesionPapa', '$correoPapa', '$datosPapa', '$telefonoPapa')";
             $conexion->query($sqlAgregarPapa);
 
             // Obtener el código recién insertado
@@ -183,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Agregar nuevo estudiante
-        $sql = "INSERT INTO estudiante (cedula_escolar, Nacionalidad, nombres, apellidos, fecha_nacimiento, edad, lugar_nacimiento, estado, codigo_nacionalidad, procedencia, estado_hermano, cantidad_hermano, lugar_hermano, cedula_representante, cedula_mama, cedula_papa, caso_emergencia, sexo_hermano) VALUES ('$cedulaEstudiante', '$nacionalidadEstudiante', '$nombresEstudiante', '$apellidosEstudiante', '$fechaEstudiante', '$edadEstudiante', '$lugarNacimiento', '$estadoEstudiante', '$nacionalidadEstudiante', '$procedenciaEstudiante', '$estadoHermano', '$cantidadHermano', '$lugarHermano', '$cedulaRepresentante', '$cedulaMama', '$cedulaPapa', '$codigoCasoEmergencia', '$sexoHermano')";
+        $sql = "INSERT INTO estudiante (cedula_escolar, Nacionalidad, nombres, apellidos, fecha_nacimiento, edad, lugar_nacimiento, estado, codigo_nacionalidad, procedencia, estado_hermano, cantidad_hermano, lugar_hermano, cedula_representante, cedula_mama, cedula_papa, caso_emergencia) VALUES ('$cedulaEstudiante', '$nacionalidadEstudiante', '$nombresEstudiante', '$apellidosEstudiante', '$fechaEstudiante', '$edadEstudiante', '$lugarNacimiento', '$estadoEstudiante', '$nacionalidadEstudiante', '$procedenciaEstudiante', '$estadoHermano', '$cantidadHermano', '$lugarHermano', '$cedulaRepresentante', '$cedulaMama', '$cedulaPapa', '$codigoCasoEmergencia')";
         $resultEstudiante = $conexion->query($sql);
 
         if ($resultEstudiante) {

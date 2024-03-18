@@ -206,14 +206,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
                       </label>
                       <label>Plantel: <input type="text" id="otroPlantel" pattern="[A-Za-z0-9ñÑáéíóúüÁÉÍÓÚÜ ]+"
                         title="Caracteres no permitidos, solo se aceptan letras y numeros." required
-                        name="otroPlantel" maxlength="30" disabled>
-                      </label>
-                      <label>Sexo:
-                        <select id="sexo_hermano" name="sexo_hermano">
-                          <option value="No">No</option>
-                          <option value="V">Femenino</option>
-                          <option value="H">Masculino</option>
-                        </select>
+                        name="otroPlantel" maxlength="50" disabled>
                       </label>
                       <label>¿Tiene Hermanos?:
                         <select id="estado_hermano" name="estado_hermano" onchange="toggleCamposHermanos()">
@@ -423,6 +416,9 @@ if (!isset($_SESSION['codigo_usuario'])) {
                       </label>
                       <label>Edad: <input type="text" id="edad_mama" pattern="[0-9]+" minlength="2" maxlength="3"
                           required title="Solo números permitidos" name="edad_mama"></label>
+                      <label>Teléfono: <input type="text" id="telefono_mama" pattern="[0-9]{11}" required
+                        title="Teléfono inválido, debe contener 11 dígitos numéricos"
+                        name="telefono_mama"></label>
                       <label>Dirección de Habitación: <textarea id="direccionh_mama" required maxlength="80"
                           name="direccionh_mama"></textarea></label>
                       <label>Teléfono de Habitación: <input type="text" id="telefonoh_mama" required pattern="[0-9]{11}"
@@ -512,6 +508,9 @@ if (!isset($_SESSION['codigo_usuario'])) {
                       </label>
                       <label>Edad: <input type="text" minlength="2" maxlength="3" required pattern="[0-9]+"
                           title="Solo números permitidos" name="edad_papa" id="edad_papa"></label>
+                      <label>Teléfono: <input type="text" id="telefono_papa" pattern="[0-9]{11}" required
+                        title="Teléfono inválido, debe contener 11 dígitos numéricos"
+                        name="telefono_papa"></label>
                       <label>Dirección de Habitación: <textarea required maxlength="80" name="direccionh_papa"
                           id="direccionh_papa"></textarea></label>
                       <label>Teléfono de Habitación: <input required type="text" pattern="[0-9]{11}"
@@ -623,7 +622,6 @@ if (!isset($_SESSION['codigo_usuario'])) {
           }
           var estadoHermano = document.getElementById('estado_hermano').value;
           var cantidadHermano = document.getElementById('cantidad_hermano').value;
-          var sexoHermano = document.getElementById('sexo_hermano').value;
           var lugarHermano = document.getElementById('lugar_hermano').value;
 
           // Obtener los valores de los campos de antecedentes prenatales
@@ -663,6 +661,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
           var profesionMama = document.getElementById('profesion_mama').value;
           var correoMama = document.getElementById('correo_mama').value;
           var datosMama = document.getElementById('datos_mama').value;
+          var telefonoMama = document.getElementById('telefono_mama').value;;
 
           // Obtener los valores de los campos del padre
           var cedulaPapa = document.getElementById('cedula_papa').value;
@@ -680,6 +679,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
           var profesionPapa = document.getElementById('profesion_papa').value;
           var correoPapa = document.getElementById('correo_papa').value;
           var datosPapa = document.getElementById('datos_papa').value;
+          var telefonoPapa = document.getElementById('telefono_papa').value;;
 
           // Obtener los valores de los campos de la persona autorizada en caso de emergencia
           var nombreCaso = document.getElementById('nombre_caso').value;
@@ -718,7 +718,6 @@ if (!isset($_SESSION['codigo_usuario'])) {
               procedenciaEstudiante: procedenciaEstudiante,
               estadoHermano: estadoHermano,
               cantidadHermano: cantidadHermano,
-              sexoHermano: sexoHermano,
               lugarHermano: lugarHermano,
 
               // Antecedentes prenatales
@@ -749,6 +748,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
               codigoCivilMama: codigoCivilMama,
               nacionalidadMama: nacionalidadMama,
               edadMama: edadMama,
+              telefonoMama: telefonoMama,
               direccionHMama: direccionHMama,
               telefonoHMama: telefonoHMama,
               direccionTMama: direccionTMama,
@@ -766,6 +766,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
               estadoPapa: estadoPapa,
               nacionalidadPapa: nacionalidadPapa,
               edadPapa: edadPapa,
+              telefonoPapa: telefonoPapa,
               direccionHPapa: direccionHPapa,
               telefonoHPapa: telefonoHPapa,
               direccionTPapa: direccionTPapa,
@@ -788,7 +789,13 @@ if (!isset($_SESSION['codigo_usuario'])) {
                 alert("Se ha inscrito el estudiante");
 
                 // Redireccionar a la página de inscripción con la cédula del estudiante
-                window.location.href = "inscripcion.php?cedulaEstudiante=" + cedulaEstudiante;
+                var request = new XMLHttpRequest();
+                request.open('GET', `./getCodigoInscripcion.php?cedula=${cedulaEstudiante}`);
+                request.onload = function(){
+                  window.location.href = `../php/generar_planillainscripcion.php?codigoInscripcion=`+this.responseText;
+                }
+                request.send();
+                
               } else {
                 // Mostrar mensaje de error
                 alert("Error en la inscripción:\n" + response);
