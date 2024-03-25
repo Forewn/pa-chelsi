@@ -227,23 +227,37 @@ $(document).ready(function () {
             success: function (estudianteInfo) {
                 if (estudianteInfo) {
                     // Llenar los campos con la información del estudiante
-                    $('#apellidos_estudiante').val(estudianteInfo.apellidos);
-                    $('#nombres_estudiante').val(estudianteInfo.nombres);
-                    $('#fecha_estudiante').val(estudianteInfo.fechaNacimiento);
-                    $('#edad_estudiante').val(estudianteInfo.edad);
-                    $('#lugar_nacimiento').val(estudianteInfo.lugarNacimiento);
-                    $('#estado_estudiante').val(estudianteInfo.estado);
-                    $('#nacionalidad_estudiante').val(estudianteInfo.nacionalidad);
-                    $('#procedencia_estudiante').val(estudianteInfo.procedencia);
-                    $('#estado_hermano').val(estudianteInfo.estadoHermano);
-                    $('#cantidad_hermano').val(estudianteInfo.cantidadHermano);
-                    $('#sexo_hermano').val(estudianteInfo.sexoHermano);
-                    $('#lugar_hermano').val(estudianteInfo.lugarHermano);
+                    if(estudianteInfo.estado_estudiante == '1'){
+                        $('#apellidos_estudiante').val(estudianteInfo.apellidos);
+                        $('#nombres_estudiante').val(estudianteInfo.nombres);
+                        $('#fecha_estudiante').val(estudianteInfo.fechaNacimiento);
+                        $('#edad_estudiante').val(estudianteInfo.edad);
+                        $('#lugar_nacimiento').val(estudianteInfo.lugarNacimiento);
+                        $('#estado_estudiante').val(estudianteInfo.estado);
+                        $('#nacionalidad_estudiante').val(estudianteInfo.nacionalidad);
+                        $('#procedencia_estudiante').val(estudianteInfo.procedencia);
+                        $('#estado_hermano').val(estudianteInfo.estadoHermano);
+                        $('#cantidad_hermano').val(estudianteInfo.cantidadHermano);
+                        $('#sexo_hermano').val(estudianteInfo.sexoHermano);
+                        $('#lugar_hermano').val(estudianteInfo.lugarHermano);
+                        // Deshabilitar los campos
+                        $('#apellidos_estudiante, #nombres_estudiante, #fecha_estudiante, #edad_estudiante, #lugar_nacimiento, #estado_estudiante, #nacionalidad_estudiante, #procedencia_estudiante, #estado_hermano, #cantidad_hermano, #sexo_hermano, #lugar_hermano').prop('disabled', true);
+                        $('#redirigirBtn').show();
+                        $('#originalBtn').hide();
+                    }
+                    else{
+                        swal({
+                            title: "Que pena!",
+                            text: "No es posible inscribir este estudiante pues ya ha cursado o se encuentra cursando Grupo C",
+                            type: "error"
+                        },
+                        function(isResult){
+                            window.location.reload();
+                        });
+                    }
+                   
 
-                    // Deshabilitar los campos
-                    $('#apellidos_estudiante, #nombres_estudiante, #fecha_estudiante, #edad_estudiante, #lugar_nacimiento, #estado_estudiante, #nacionalidad_estudiante, #procedencia_estudiante, #estado_hermano, #cantidad_hermano, #sexo_hermano, #lugar_hermano').prop('disabled', true);
-                    $('#redirigirBtn').show();
-                    $('#originalBtn').hide();
+                    
                 } else {
                     
                     // Quitar la propiedad 'disabled'

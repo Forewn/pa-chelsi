@@ -119,6 +119,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
   <link href="../assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
   <link href="../dist/css/style.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/formulario.css" />
+  <link rel="stylesheet" href="../assets/libs/sweetAlerts2/sweetalert2.css">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
@@ -554,6 +555,23 @@ if (!isset($_SESSION['codigo_usuario'])) {
                       <label>Nombre: <input type="text" required pattern="[A-Za-zñÑáéíóúüÁÉÍÓÚÜ ]+"
                           title="Solo letras y espacios permitidos" minlength="3" maxlength="30" name="nombre_caso"
                           id="nombre_caso"></label>
+                      <label>Parentesco:
+                        <select id="parentesco_emergencia" name="parentesco_emergencia">
+                          <?php
+                          $sentencia = "SELECT * FROM parentesco";
+                          $buscar = mysqli_query($conexion, $sentencia);
+                          while ($r = mysqli_fetch_array($buscar)) {
+                            $codigo = $r['codigo_parentesco'];
+                            $nombre = $r['descripcion'];
+                            ?>
+                            <option required value="<?php echo $codigo ?>">
+                              <?php echo $nombre ?>
+                            </option>
+                            <?php
+                          }
+                          ?>
+                        </select>
+                      </label>
                     </form>
                     <button class="btn" onclick="validateAndShowSection('madre', 'padre')">Atrás</button>
                     <button class="btn" onclick="validateAndShowSection('emergencia', 'padre')">Siguiente</button>
@@ -608,6 +626,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
         }
         function completeForm() {
           // Obtener los valores de los campos del estudiante
+      
           var cedulaEstudiante = document.getElementById('cedula_escolar').value;
           var apellidosEstudiante = document.getElementById('apellidos_estudiante').value;
           var nombresEstudiante = document.getElementById('nombres_estudiante').value;
@@ -683,6 +702,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
 
           // Obtener los valores de los campos de la persona autorizada en caso de emergencia
           var nombreCaso = document.getElementById('nombre_caso').value;
+          var parentescoCaso = document.getElementById('parentesco_emergencia').value;
           // Enviar los datos a guardar_inscripcion.php
 
           // let request = new XMLHttpRequest();
@@ -778,7 +798,8 @@ if (!isset($_SESSION['codigo_usuario'])) {
               datosPapa: datosPapa,
 
               // Persona autorizada en caso de emergencia
-              nombreCaso: nombreCaso
+              nombreCaso: nombreCaso,
+              parentescoCaso: parentescoCaso
             },
             success: function (response) {
               // Manejar la respuesta del servidor, si es necesario
@@ -787,14 +808,9 @@ if (!isset($_SESSION['codigo_usuario'])) {
               // Verificar si la respuesta es positiva
               if (response.includes("Se ha inscrito exitosamente.")) {
                 alert("Se ha inscrito el estudiante");
-
-                // Redireccionar a la página de inscripción con la cédula del estudiante
-                var request = new XMLHttpRequest();
-                request.open('GET', `./getCodigoInscripcion.php?cedula=${cedulaEstudiante}`);
-                request.onload = function(){
-                  window.location.href = `../php/generar_planillainscripcion.php?codigoInscripcion=`+this.responseText;
-                }
-                request.send();
+                
+                window.location.href = `./inscripcion.php?cedulaEstudiante=${cedulaEstudiante}`;
+                
                 
               } else {
                 // Mostrar mensaje de error
@@ -830,6 +846,7 @@ if (!isset($_SESSION['codigo_usuario'])) {
       <script src="../assets/libs/toastr/build/toastr.min.js"></script>
       <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="../assets/libs/sweetAlerts2/sweetalert2.min.js"></script>
 
 
 

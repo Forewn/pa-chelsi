@@ -149,6 +149,7 @@
             $doctor = $datos['doctor_AP'];
             $autorizado = $datos['caso_emergencia'];
             $ef = $datos['enfermar_facilidad_AP'];
+            $parentescoA = $datos['parentesco_emergencia'];
             $this->titulo('DATOS DEL NIÑO (A)');
             $this->Write(5, 'Apellidos: ');
             $this->resultado($apellidosN);
@@ -494,8 +495,15 @@
             $this->Ln($interlineado);
             $this->Write(5, utf8_decode("Persona autorizada para retirar el niño - niña de la Institución en Caso de Emergencias: "));
             $this->Line(11, $this->GetY()+4, 107, $this->GetY()+4);
-            $this->resultado($autorizado);
             $this->Ln($interlineado*2);
+            $this->Write(5, utf8_decode("Nombre: "));
+            $this->resultado($autorizado);
+            $this->Line(21, $this->GetY()+4, 100, $this->GetY()+4);
+            $this->SetX(100);
+            $this->Write(5, "Parentezco: ");
+            $this->resultado($parentescoA);
+            $this->Line(115, $this->GetY()+4, 130, $this->GetY()+4);
+            $this->Ln($interlineado);
             $this->SetFont('Arial', '', 6);
             $this->Write(5, utf8_decode("Anexar la copia de la Cédula."));
             $this->SetFont('Arial', '', 7);

@@ -7,7 +7,7 @@ if (isset($_POST['cedulaEscolar'])) {
     $cedulaEscolar = $_POST['cedulaEscolar'];
 
     // Query para buscar el estudiante por cédula escolar
-    $sql = "SELECT * FROM estudiante WHERE cedula_escolar = '$cedulaEscolar' and estado_estudiante=1";
+    $sql = "SELECT * FROM estudiante WHERE cedula_escolar = '$cedulaEscolar';";
     $result = $conexion->query($sql);
 
     // Inicializa un array para almacenar la información del estudiante
@@ -28,6 +28,7 @@ if (isset($_POST['cedulaEscolar'])) {
         $estudianteInfo['cantidadHermano'] = $row['cantidad_hermano'];
         $estudianteInfo['sexoHermano'] = $row['sexo_hermano'];
         $estudianteInfo['lugarHermano'] = $row['lugar_hermano'];
+        $estudianteInfo['estado_estudiante'] = $row['estado_estudiante'];
 
         // Convierte el array a formato JSON y lo devuelve
         echo json_encode($estudianteInfo);

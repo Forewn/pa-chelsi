@@ -220,7 +220,7 @@ if ($resultEstudiante->num_rows > 0) {
                                             $buscar = mysqli_query($conexion, $sentencia);
                                             while ($r = mysqli_fetch_array($buscar)) {
                                                 $codigo = $r['codigo_periodo'];
-                                                $nombre = $r['nombre'];
+                                                $nombre = ($r['actual'] == '1')? "Periodo Actual" : $r['nombre'];
                                                 ?>
                                                 <option required value="<?php echo $codigo ?>">
                                                     <?php echo $nombre ?>

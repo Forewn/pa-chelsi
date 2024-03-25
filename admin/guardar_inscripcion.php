@@ -2,7 +2,6 @@
 // Verifica si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera los datos del estudiante
-    echo "hola";
     $cedulaEstudiante = $_POST['cedulaEstudiante'];
     $apellidosEstudiante = $_POST['apellidosEstudiante'];
     $nombresEstudiante = $_POST['nombresEstudiante'];
@@ -80,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Recupera los datos de emergencia
     $nombreCaso = $_POST['nombreCaso'];
+    $parentescoCaso = $_POST['parentescoCaso'];
 
     include '../php/conexion.php';
 
@@ -159,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $codigoPapa = $rowPapa['cedula_papa'];
         } else {
             // No existe, agregar nuevo registro
-            $sqlAgregarPapa = "INSERT INTO papa (cedula_papa, nombres, apellidos, codigo_estadocivil, codigo_nacionalidad, edad, direccion_habitacion, telefono_habitacion, direccion_trabajo, telefono_trabajo, codigo_nivelacademico, ocupacion, profesion, correo, datos_extras) VALUES ('$cedulaPapa', '$nombresPapa', '$apellidosPapa', '$estadoPapa', '$nacionalidadPapa', '$edadPapa', '$direccionHPapa', '$telefonoHPapa', '$direccionTPapa', '$telefonoTPapa', '$nivelPapa', '$ocupacionPapa', '$profesionPapa', '$correoPapa', '$datosPapa', '$telefonoPapa')";
+            $sqlAgregarPapa = "INSERT INTO papa (cedula_papa, nombres, apellidos, codigo_estadocivil, codigo_nacionalidad, edad, direccion_habitacion, telefono_habitacion, direccion_trabajo, telefono_trabajo, codigo_nivelacademico, ocupacion, profesion, correo, datos_extras, telefono) VALUES ('$cedulaPapa', '$nombresPapa', '$apellidosPapa', '$estadoPapa', '$nacionalidadPapa', '$edadPapa', '$direccionHPapa', '$telefonoHPapa', '$direccionTPapa', '$telefonoTPapa', '$nivelPapa', '$ocupacionPapa', '$profesionPapa', '$correoPapa', '$datosPapa', '$telefonoPapa')";
             $conexion->query($sqlAgregarPapa);
 
             // Obtener el código recién insertado
@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $codigoCasoEmergencia = $rowCasoEmergencia['codigo_emergencia'];
         } else {
             // No existe, agregar nuevo registro
-            $sqlAgregarCasoEmergencia = "INSERT INTO caso_emergencia (nombre) VALUES ('$nombreCaso')";
+            $sqlAgregarCasoEmergencia = "INSERT INTO caso_emergencia (nombre, parentesco) VALUES ('$nombreCaso', '$parentescoCaso')";
             $conexion->query($sqlAgregarCasoEmergencia);
 
             // Obtener el código recién insertado
@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($resultEstudiante) {
             // Agregar antecedentes parentales
-            $sqlAntecedentes = "INSERT INTO antecedentes_paranatales (enfermedad, hospitalizado, alergias, condicion, informe, limitacion, especialista, doctor, enfermar_facilidad, cedula_escolar) VALUES ('$enfermedad', '$hospitalizado', '$alergias', '$condicion', '$informe', '$limitacion', '$especialista', '$doctor', '$enfermarFacilidad', '$cedulaEstudiante')";
+            $sqlAntecedentes = "INSERT INTO antecedentes_paranatales (enfermedad, hospitalizado, alergias, condicion, informe, limitacion, especialista, doctor, enfermar_facilidad, cedula_escolar) VALUES ('$enfermedad', '$hospitalizado', ($presentaAlergia), '$condicion', '$informe', '$limitacion', '$especialista', '$doctor', '$enfermarFacilidad', '$cedulaEstudiante')";
             $resultAntecedentes = $conexion->query($sqlAntecedentes);
 
             if ($resultAntecedentes) {
